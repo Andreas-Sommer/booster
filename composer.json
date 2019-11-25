@@ -1,0 +1,35 @@
+{
+  "name": "belsignum/booster",
+  "version": "1.0.0",
+  "description": "Schema.org structured data for Typo3 and Google APIs",
+  "license": "GPL-2.0-or-later",
+  "authors": [
+    {
+      "name": "Andreas Sommer",
+      "role": "Developer"
+    }
+  ],
+  "keywords": [
+    "TYPO3 CMS",
+    "TYPO3 extension",
+    "JSON-LD",
+    "Structured data",
+    "SEO",
+    "schema.org",
+    "Google",
+    "Search"
+  ],
+  "require": {
+    "php": "^7.2",
+    "ext-json": "*",
+    "typo3/cms-core": "^8.7 || ^9.5"
+  },
+  "replace": {
+    "typo3-ter/schema": "self.version"
+  },
+  "autoload": {
+    "psr-4": {
+      "Belsignum\\Booster\\": "Classes/"
+    }
+  }
+}

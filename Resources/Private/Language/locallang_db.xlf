@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2019-11-20T16:10:25Z" product-name="booster">
+		<header/>
+		<body>
+			<trans-unit id="pages.tabs.booster">
+				<source>Booster</source>
+			</trans-unit>
+			<trans-unit id="pages.tx_booster_faqs">
+				<source>FAQ</source>
+			</trans-unit>
+			<trans-unit id="pages.tx_booster_faqs.add">
+				<source>Add new FAQ</source>
+			</trans-unit>
+
+			<trans-unit id="tx_booster_domain_model_content">
+				<source>Booster Content</source>
+			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.name">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.text">
+				<source>Text</source>
+			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.question">
+				<source>Question</source>
+			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.answer">
+				<source>Answer</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
