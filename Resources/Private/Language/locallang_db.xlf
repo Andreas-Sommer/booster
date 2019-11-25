@@ -4,7 +4,7 @@
 		<header/>
 		<body>
 			<trans-unit id="pages.tabs.booster">
-				<source>Booster</source>
+				<source>Structured Data</source>
 			</trans-unit>
 			<trans-unit id="pages.tx_booster_faqs">
 				<source>FAQ</source>
