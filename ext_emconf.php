@@ -1,4 +1,11 @@
 <?php
+
+$dependencies['typo3'] = '8.7.0-9.5.99';
+if(preg_match('/^(9|10)\./', TYPO3_version))
+{
+	$dependencies['schema'] = '1.4.0';
+}
+
 $EM_CONF[$_EXTKEY] = [
 	'title' => 'Booster',
 	'description' => 'Structured data for Typo3 and Google APIs',
@@ -10,10 +17,7 @@ $EM_CONF[$_EXTKEY] = [
 	'author_email' => 'sommer@belsignum.com',
 	'version' => '1.0.0',
 	'constraints' => [
-		'depends' => [
-			'typo3' => '8.7.0-9.5.99',
-			'schema' => '1.4.0'
-		],
+		'depends' => $dependencies,
 		'conflicts' => [],
 		'suggests' => [
 			'setup' => '',
