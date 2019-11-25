@@ -10,5 +10,15 @@ config.tx_extbase.persistence {
             }
         }
 
+        Belsignum\Booster\Domain\Model\LanguagePage {
+            mapping {
+                tableName = pages_language_overlay
+                columns {
+                    tx_booster_faqs.mapOnProperty = faqs
+                }
+            }
+        }
+
     }
 }
+

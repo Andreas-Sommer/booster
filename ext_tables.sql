@@ -2,6 +2,10 @@ CREATE TABLE pages (
 	tx_booster_faqs  int(11) DEFAULT '0' NOT NULL
 );
 
+CREATE TABLE pages_language_overlay (
+	tx_booster_faqs  int(11) DEFAULT '0' NOT NULL
+);
+
 
 CREATE TABLE tx_booster_domain_model_content (
 	uid int(11) unsigned DEFAULT 0 NOT NULL auto_increment,

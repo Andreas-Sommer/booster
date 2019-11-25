@@ -9,6 +9,7 @@
 namespace Belsignum\Booster\Hook\PageRenderer;
 
 use Belsignum\Booster\Domain\Repository\PageRepository;
+use Belsignum\Booster\Domain\Repository\LanguagePageRepository;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use Brotkrueml\Schema\Model\Type\Answer;
 use Brotkrueml\Schema\Model\Type\FAQPage;
@@ -26,7 +27,7 @@ class PreProcessHook
 	/** @var ObjectManager */
 	protected $objectManager;
 
-	/** @var PageRepository */
+	/** @var PageRepository|LanguagePageRepository */
 	protected $pageRepository;
 
 	/**
@@ -43,7 +44,10 @@ class PreProcessHook
 		$this->schemaManager = $schemaManager
 			?: GeneralUtility::makeInstance(SchemaManager::class);
 		$this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-		$this->pageRepository = $this->objectManager->get(PageRepository::class);
+
+		$languageRepository = $this->controller->sys_language_uid > 0 && preg_match('/^8\./', TYPO3_version)
+			? LanguagePageRepository::class : PageRepository::class;
+		$this->pageRepository = $this->objectManager->get($languageRepository);
 	}
 	public function execute(?array &$params, PageRenderer $pageRenderer): void
 	{
@@ -51,6 +55,7 @@ class PreProcessHook
 			return;
 		}
 		$page = $this->pageRepository->findByUid($this->controller->id);
+
 		if($page->getFaqs()->count())
 		{
 			$faqPage = new FAQPage();
