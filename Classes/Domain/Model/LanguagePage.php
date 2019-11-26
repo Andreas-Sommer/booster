@@ -8,9 +8,8 @@
 
 namespace Belsignum\Booster\Domain\Model;
 
-class LanguagePage extends Page
+class LanguagePage extends AbstractPage
 {
-
 	/**
 	 * @var int
 	 */

@@ -8,6 +8,7 @@
 
 namespace Belsignum\Booster\Hook\PageRenderer;
 
+use Belsignum\Booster\Domain\Model\AbstractPage;
 use Belsignum\Booster\Domain\Repository\PageRepository;
 use Belsignum\Booster\Domain\Repository\LanguagePageRepository;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -54,9 +55,12 @@ class PreProcessHook
 		if (TYPO3_MODE !== 'FE' || $this->controller->page['no_index'] > 0) {
 			return;
 		}
-		$page = $this->pageRepository->findByUid($this->controller->id);
 
-		if($page->getFaqs()->count())
+		$page = $this->pageRepository->findByUid($this->controller->id);
+		if(
+			is_subclass_of($page , AbstractPage::class)
+		   	&& $page->getFaqs()->count()
+		)
 		{
 			$faqPage = new FAQPage();
 
