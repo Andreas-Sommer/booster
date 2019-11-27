@@ -45,7 +45,8 @@ call_user_func(
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
 			$table,
 			'--div--;' . $ll . ':pages.tabs.booster, tx_booster_faqs',
-			\Belsignum\Booster\Constants::DOCTYPE_DEFAULT
+			(string) \Belsignum\Booster\Constants::DOCTYPE_DEFAULT,
+			'after:endtime'
 		);
 	},
 	'booster',
