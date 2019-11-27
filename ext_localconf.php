@@ -15,6 +15,7 @@ defined('TYPO3_MODE') or die();
 			$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']['Brotkrueml\\Schema\\Hook\\PageRenderer\\PostProcessHook'] = array(
 				'className' => 'Belsignum\\Booster\\Xclass\\Hook\\PageRenderer\\PostProcessHook'
 			);
+			$GLOBALS['TYPO3_CONF_VARS']['FE']['pageOverlayFields'] .= ',tx_booster_faqs';
 		}
 	}
 })();

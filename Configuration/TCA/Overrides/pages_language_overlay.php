@@ -22,8 +22,11 @@ if(preg_match('/^8\./', TYPO3_version)) {
 						'appearance'       => [
 							'collapseAll'        => true,
 							'useSortable'        => true,
-							'newRecordLinkTitle' => $ll
-													. ':pages.tx_booster_faqs.add',
+							'newRecordLinkTitle' => $ll . ':pages.tx_booster_faqs.add',
+							'showPossibleLocalizationRecords' => TRUE,
+							'showRemovedLocalizationRecords' => TRUE,
+							'showAllLocalizationLink' => TRUE,
+							'showSynchronizationLink' => TRUE,
 						],
 						'overrideChildTca' => [
 							'ctrl'    => [

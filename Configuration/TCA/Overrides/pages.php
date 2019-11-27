@@ -20,6 +20,10 @@ call_user_func(
 						'collapseAll' => TRUE,
 						'useSortable' => TRUE,
 						'newRecordLinkTitle' => $ll . ':pages.tx_booster_faqs.add',
+						'showPossibleLocalizationRecords' => TRUE,
+						'showRemovedLocalizationRecords' => TRUE,
+						'showAllLocalizationLink' => TRUE,
+						'showSynchronizationLink' => TRUE,
 					],
 					'overrideChildTca' => [
 						'ctrl' => [

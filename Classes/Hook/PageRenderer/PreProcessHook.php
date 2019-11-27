@@ -8,9 +8,8 @@
 
 namespace Belsignum\Booster\Hook\PageRenderer;
 
-use Belsignum\Booster\Domain\Model\AbstractPage;
+use Belsignum\Booster\Domain\Model\Page;
 use Belsignum\Booster\Domain\Repository\PageRepository;
-use Belsignum\Booster\Domain\Repository\LanguagePageRepository;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use Brotkrueml\Schema\Model\Type\Answer;
 use Brotkrueml\Schema\Model\Type\FAQPage;
@@ -28,7 +27,7 @@ class PreProcessHook
 	/** @var ObjectManager */
 	protected $objectManager;
 
-	/** @var PageRepository|LanguagePageRepository */
+	/** @var PageRepository */
 	protected $pageRepository;
 
 	/**
@@ -45,10 +44,7 @@ class PreProcessHook
 		$this->schemaManager = $schemaManager
 			?: GeneralUtility::makeInstance(SchemaManager::class);
 		$this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-
-		$languageRepository = $this->controller->sys_language_uid > 0 && preg_match('/^8\./', TYPO3_version)
-			? LanguagePageRepository::class : PageRepository::class;
-		$this->pageRepository = $this->objectManager->get($languageRepository);
+		$this->pageRepository = $this->objectManager->get(PageRepository::class);
 	}
 	public function execute(?array &$params, PageRenderer $pageRenderer): void
 	{
@@ -58,7 +54,7 @@ class PreProcessHook
 
 		$page = $this->pageRepository->findByUid($this->controller->id);
 		if(
-			is_subclass_of($page , AbstractPage::class)
+			$page instanceof Page
 		   	&& $page->getFaqs()->count()
 		)
 		{
