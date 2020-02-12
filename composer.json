@@ -22,7 +22,8 @@
   "require": {
     "php": "^7.2",
     "ext-json": "*",
-    "typo3/cms-core": "^8.7 || ^9.5"
+    "typo3/cms-core": "^8.7 || ^9.5",
+    "brotkrueml/schema": ">=1.4.1"
   },
   "replace": {
     "typo3-ter/schema": "self.version"

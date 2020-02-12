@@ -3,7 +3,7 @@
 $dependencies['typo3'] = '8.7.0-9.5.99';
 if(preg_match('/^(9|10)\./', TYPO3_version))
 {
-	$dependencies['schema'] = '1.4.0';
+	$dependencies['schema'] = '1.4.1';
 }
 
 $EM_CONF[$_EXTKEY] = [
