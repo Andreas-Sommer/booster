@@ -12,6 +12,12 @@
 			<trans-unit id="pages.tx_booster_faqs.add">
 				<source>Add new FAQ</source>
 			</trans-unit>
+			<trans-unit id="pages.tx_booster_product">
+				<source>Product</source>
+			</trans-unit>
+			<trans-unit id="pages.tx_booster_product.create">
+				<source>Create new Product</source>
+			</trans-unit>
 
 			<trans-unit id="tx_booster_domain_model_content">
 				<source>Booster Content</source>
@@ -22,11 +28,62 @@
 			<trans-unit id="tx_booster_domain_model_content.text">
 				<source>Text</source>
 			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.date">
+				<source>Date</source>
+			</trans-unit>
 			<trans-unit id="tx_booster_domain_model_content.question">
 				<source>Question</source>
 			</trans-unit>
 			<trans-unit id="tx_booster_domain_model_content.answer">
 				<source>Answer</source>
+			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.images">
+				<source>Images</source>
+			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.slogan">
+				<source>Slogan</source>
+			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.color">
+				<source>Color</source>
+			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.url">
+				<source>Url</source>
+			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.award">
+				<source>Award</source>
+			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.sku">
+				<source>SKU</source>
+			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.mpn">
+				<source>MPN</source>
+			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.gtin">
+				<source>GTIN</source>
+			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.nsn">
+				<source>NSN</source>
+			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.product_id">
+				<source>ProductID</source>
+			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.price">
+				<source>Price</source>
+			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.currency">
+				<source>Currency</source>
+			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.availability">
+				<source>Availability</source>
+			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.brand">
+				<source>Brand</source>
+			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.offers">
+				<source>Offers</source>
+			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.price_valid_until">
+				<source>Price valid until</source>
 			</trans-unit>
 		</body>
 	</file>

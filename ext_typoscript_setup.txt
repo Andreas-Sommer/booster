@@ -6,6 +6,7 @@ config.tx_extbase.persistence {
                 tableName = pages
                 columns {
                     tx_booster_faqs.mapOnProperty = faqs
+                    tx_booster_product.mapOnProperty = product
                 }
             }
         }
@@ -15,6 +16,7 @@ config.tx_extbase.persistence {
                 tableName = pages_language_overlay
                 columns {
                     tx_booster_faqs.mapOnProperty = faqs
+                    tx_booster_product.mapOnProperty = product
                 }
             }
         }

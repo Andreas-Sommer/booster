@@ -1,9 +1,11 @@
 CREATE TABLE pages (
-	tx_booster_faqs  int(11) DEFAULT '0' NOT NULL
+	tx_booster_faqs  int(11) DEFAULT '0' NOT NULL,
+	tx_booster_product  int(11) DEFAULT '0' NOT NULL
 );
 
 CREATE TABLE pages_language_overlay (
-	tx_booster_faqs  int(11) DEFAULT '0' NOT NULL
+	tx_booster_faqs  int(11) DEFAULT '0' NOT NULL,
+	tx_booster_product  int(11) DEFAULT '0' NOT NULL
 );
 
 
@@ -13,6 +15,23 @@ CREATE TABLE tx_booster_domain_model_content (
 
 	name varchar(255) DEFAULT '' NOT NULL,
 	text text NOT NULL,
+	date int(11) DEFAULT '0' NOT NULL,
+	slogan varchar(255) DEFAULT '' NOT NULL,
+	color varchar(255) DEFAULT '' NOT NULL,
+	award varchar(255) DEFAULT '' NOT NULL,
+	url varchar(255) DEFAULT '' NOT NULL,
+	sku varchar(255) DEFAULT '' NOT NULL,
+	mpn varchar(255) DEFAULT '' NOT NULL,
+	nsn varchar(255) DEFAULT '' NOT NULL,
+	gtin varchar(14) DEFAULT '' NOT NULL,
+	product_id varchar(255) DEFAULT '' NOT NULL,
+	currency varchar(3) DEFAULT '' NOT NULL,
+	availability varchar(255) DEFAULT '' NOT NULL,
+	price double(11,2) DEFAULT '0.00' NOT NULL,
+	images int(11) DEFAULT '0' NOT NULL,
+	brand int(11) DEFAULT '0' NOT NULL,
+	offers int(11) DEFAULT '0' NOT NULL,
+	price_valid_until int(11) DEFAULT '0' NOT NULL,
 
 	tstamp int(11) unsigned DEFAULT 0 NOT NULL,
 	crdate int(11) unsigned DEFAULT 0 NOT NULL,

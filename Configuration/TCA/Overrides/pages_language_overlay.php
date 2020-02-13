@@ -1,60 +1,26 @@
 <?php
+use Belsignum\Booster\Constants;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 if(preg_match('/^8\./', TYPO3_version)) {
 	call_user_func(
 		function ($extKey, $table) {
 
-			$ll = 'LLL:EXT:' . $extKey
-				  . '/Resources/Private/Language/locallang_db.xlf';
+			$ll = 'LLL:EXT:' . $extKey . '/Resources/Private/Language/locallang_db.xlf';
 
 			$pagesLangBoosterFields = [
-				'tx_booster_faqs' => [
-					'exclude' => true,
-					'label'   => $ll . ':pages.tx_booster_faqs',
-					'config'  => [
-						'type'             => 'inline',
-						'foreign_table'    => 'tx_booster_domain_model_content',
-						'MM'               => 'tx_booster_pages_content_mm',
-						'MM_match_fields'  => [
-							'fieldname' => 'tx_booster_faq'
-						],
-						'maxitems'         => 999,
-						'appearance'       => [
-							'collapseAll'        => true,
-							'useSortable'        => true,
-							'newRecordLinkTitle' => $ll . ':pages.tx_booster_faqs.add',
-							'showPossibleLocalizationRecords' => TRUE,
-							'showRemovedLocalizationRecords' => TRUE,
-							'showAllLocalizationLink' => TRUE,
-							'showSynchronizationLink' => TRUE,
-						],
-						'overrideChildTca' => [
-							'ctrl'    => [
-								'iconfile' => 'EXT:booster/Resources/Public/Icons/faq.svg',
-							],
-							'columns' => [
-								'name' => [
-									'label' => $ll
-											   . ':tx_booster_domain_model_content.question',
-								],
-								'text' => [
-									'label' => $ll
-											   . ':tx_booster_domain_model_content.answer',
-								],
-							],
-						],
-					],
-				],
+				'tx_booster_faqs' => $GLOBALS['TCA']['pages']['columns']['tx_booster_faqs'],
+				'tx_booster_product' => $GLOBALS['TCA']['pages']['columns']['tx_booster_product'],
 			];
 
-			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
+			ExtensionManagementUtility::addTCAcolumns(
 				$table,
 				$pagesLangBoosterFields
 			);
-			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
+			ExtensionManagementUtility::addToAllTCAtypes(
 				$table,
 				'--div--;' . $ll . ':pages.tabs.booster, tx_booster_faqs',
-				(string) \Belsignum\Booster\Constants::DOCTYPE_DEFAULT,
+				(string) Constants::CONTENT_TYPE_DEFAULT,
 				'after:endtime'
 			);
 		},

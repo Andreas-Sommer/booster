@@ -8,8 +8,12 @@
 
 namespace Belsignum\Booster\Hook\PageRenderer;
 
+use Belsignum\Booster\Constants;
+use Belsignum\Booster\Domain\Model\Content;
 use Belsignum\Booster\Domain\Model\Page;
 use Belsignum\Booster\Domain\Repository\PageRepository;
+use Brotkrueml\Schema\Model\Type\Offer;
+use Brotkrueml\Schema\Model\Type\Product;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use Brotkrueml\Schema\Model\Type\Answer;
 use Brotkrueml\Schema\Model\Type\FAQPage;
@@ -74,6 +78,31 @@ class PreProcessHook
 			}
 
 			$this->schemaManager->addType($faqPage);
+		}
+		if(
+			$page instanceof Page
+			&& $page->getProduct() instanceof Content
+		)
+		{
+			$product = new Product();
+			$product->addProperty('name', $page->getProduct()->getName());
+			$product->addProperty('description', $page->getProduct()->getText());
+			$product->addProperty('sku', $page->getProduct()->getSku());
+			$product->addProperty('mpn', $page->getProduct()->getMpn());
+			$brand = $page->getProduct()->getBrand();
+			$product->addProperty('brand', $brand ? $brand->getName() : '');
+
+			if(($offers = $page->getProduct()->getOffers()) instanceof Content)
+			{
+				$offerObj = new Offer();
+				$offerObj->addProperty('priceCurrency', $offers->getCurrency());
+				$offerObj->addProperty('price', $offers->getPrice());
+				$offerObj->addProperty('availability', $offers->getAvailability());
+				$priceValidUntil = $offers->getPriceValidUntil() ? $offers->getPriceValidUntil()->getDate()->format(Constants::DATETIME_FORMAT_8601) : NULL;
+				$offerObj->addProperty('priceValidUntil', $priceValidUntil);
+				$product->addProperty('offers', $offerObj);
+			}
+			$this->schemaManager->addType($product);
 		}
 	}
 }

@@ -19,6 +19,11 @@ abstract class AbstractPage extends AbstractEntity
 	 */
 	protected $faqs;
 
+	/**
+	 * @var \Belsignum\Booster\Domain\Model\Content
+	 */
+	protected $product;
+
 	public function __construct()
 	{
 		$this->faqs = new ObjectStorage();
@@ -40,5 +45,19 @@ abstract class AbstractPage extends AbstractEntity
 		$this->faqs = $faqs;
 	}
 
+	/**
+	 * @return \Belsignum\Booster\Domain\Model\Content
+	 */
+	public function getProduct(): \Belsignum\Booster\Domain\Model\Content
+	{
+		return $this->product;
+	}
 
+	/**
+	 * @param \Belsignum\Booster\Domain\Model\Content $product
+	 */
+	public function setProduct(\Belsignum\Booster\Domain\Model\Content $product
+	): void {
+		$this->product = $product;
+	}
 }

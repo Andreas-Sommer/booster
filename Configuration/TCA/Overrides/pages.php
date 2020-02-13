@@ -1,7 +1,12 @@
 <?php
+
+use Belsignum\Booster\Constants;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
 call_user_func(
 	function ($extKey, $table) {
 
+		$types = $GLOBALS['TCA']['tx_booster_domain_model_content']['types'];
 		$ll = 'LLL:EXT:' . $extKey . '/Resources/Private/Language/locallang_db.xlf';
 
 		$pagesBoosterFields = [
@@ -29,6 +34,9 @@ call_user_func(
 						'ctrl' => [
 							'iconfile' => 'EXT:booster/Resources/Public/Icons/faq.svg',
 						],
+						'types' => [
+							'1' => $types[Constants::CONTENT_TYPE_FAQ]
+						],
 						'columns' => [
 							'name' => [
 								'label' => $ll . ':tx_booster_domain_model_content.question',
@@ -40,16 +48,47 @@ call_user_func(
 					],
 				],
 			],
+			'tx_booster_product' => [
+				'exclude' => true,
+				'label' => $ll . ':pages.tx_booster_product',
+				'config' => [
+					'type' => 'inline',
+					'foreign_table' => 'tx_booster_domain_model_content',
+					'maxitems' => 1,
+					'appearance' => [
+						'collapseAll' => TRUE,
+						'useSortable' => TRUE,
+						'newRecordLinkTitle' => $ll . ':pages.tx_booster_product.create',
+						'showPossibleLocalizationRecords' => TRUE,
+						'showRemovedLocalizationRecords' => TRUE,
+						'showAllLocalizationLink' => TRUE,
+						'showSynchronizationLink' => TRUE,
+					],
+					'overrideChildTca' => [
+						'ctrl' => [
+							'iconfile' => 'EXT:booster/Resources/Public/Icons/product.svg',
+						],
+						'types' => [
+							'1' => $types[Constants::CONTENT_TYPE_PRODUCT]
+						],
+						'columns' => [
+							'text' => [
+								'label' => $ll . ':tx_booster_domain_model_content.description',
+							],
+						],
+					],
+				],
+			],
 		];
 
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
+		ExtensionManagementUtility::addTCAcolumns(
 			$table,
 			$pagesBoosterFields
 		);
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
+		ExtensionManagementUtility::addToAllTCAtypes(
 			$table,
-			'--div--;' . $ll . ':pages.tabs.booster, tx_booster_faqs',
-			(string) \Belsignum\Booster\Constants::DOCTYPE_DEFAULT,
+			'--div--;' . $ll . ':pages.tabs.booster, tx_booster_faqs, tx_booster_product',
+			(string) Constants::CONTENT_TYPE_DEFAULT,
 			'after:endtime'
 		);
 	},
