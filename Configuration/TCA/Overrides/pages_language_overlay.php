@@ -19,7 +19,7 @@ if(preg_match('/^8\./', TYPO3_version)) {
 			);
 			ExtensionManagementUtility::addToAllTCAtypes(
 				$table,
-				'--div--;' . $ll . ':pages.tabs.booster, tx_booster_faqs',
+				'--div--;' . $ll . ':pages.tabs.booster, tx_booster_faqs, tx_booster_product',
 				(string) Constants::CONTENT_TYPE_DEFAULT,
 				'after:endtime'
 			);
