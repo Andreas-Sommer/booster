@@ -1,15 +1,18 @@
 <?php
 
 use Belsignum\Booster\Constants;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Resource\File;
 
 $ll = 'LLL:EXT:booster/Resources/Private/Language/locallang_db.xlf';
 $types = [
-	(string) Constants::CONTENT_TYPE_DEFAULT => ['showitem' => 'hidden, name, text, url, slogan, color, award, --palette--;numbers;numbers, brand, offers'],
+	(string) Constants::CONTENT_TYPE_DEFAULT => ['showitem' => 'hidden, name, text, url, slogan, color, award, rating_value, review_count, --palette--;numbers;numbers, brand, offers, aggregate_rating, images'],
 	(string) Constants::CONTENT_TYPE_FAQ => ['showitem' => 'name, text'],
-	(string) Constants::CONTENT_TYPE_PRODUCT => ['showitem' => 'name, text, url, slogan, color, award, --palette--;numbers;numbers, brand, offers'],
+	(string) Constants::CONTENT_TYPE_PRODUCT => ['showitem' => 'name, text, url, slogan, color, award, --palette--;numbers;numbers, brand, offers, aggregate_rating, images'],
 	(string) Constants::CONTENT_TYPE_BRAND => ['showitem' => 'name'],
 	(string) Constants::CONTENT_TYPE_DATE => ['showitem' => 'date'],
 	(string) Constants::CONTENT_TYPE_OFFERS => ['showitem' => 'price, currency, price_valid_until, availability, url'],
+	(string) Constants::CONTENT_TYPE_AGGREGATE_RATING => ['showitem' => 'rating_value, review_count'],
 ];
 return [
 	'ctrl' => [
@@ -34,7 +37,7 @@ return [
 	],
 	'types' => $types,
 	'palettes' => [
-		'numbers' => ['showitem' => 'sku, gtin, product_id, nsn, mpn']
+		'numbers' => ['showitem' => 'sku, product_id, mpn']
 	],
 	'columns' => [
 		'sys_language_uid' => [
@@ -113,6 +116,54 @@ return [
 				'renderType' => 'inputDateTime',
 				'eval' => 'datetime',
 			]
+		],
+		'images' => [
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.images',
+			'config' => ExtensionManagementUtility::getFileFieldTCAConfig(
+				'booster_product_image',
+				[
+					'appearance' => [
+						'createNewRelationLinkTitle' => 'LLL:EXT:cms/locallang_ttc.xlf:images.addFileReference'
+					],
+					// custom configuration for displaying fields in the overlay/reference table
+					// to use the image overlay palette instead of the basic overlay palette
+					'overrideChildTca' => [
+						'types' => [
+							'0' => [
+								'showitem' => '
+                            --palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+                            --palette--;;filePalette'
+							],
+							File::FILETYPE_TEXT => [
+								'showitem' => '
+                                --palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+                                --palette--;;filePalette'
+							],
+							File::FILETYPE_IMAGE => [
+								'showitem' => '
+                                --palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+                                --palette--;;filePalette'
+							],
+							File::FILETYPE_AUDIO => [
+								'showitem' => '
+                                --palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.audioOverlayPalette;audioOverlayPalette,
+                                --palette--;;filePalette'
+							],
+							File::FILETYPE_VIDEO => [
+								'showitem' => '
+                                --palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.videoOverlayPalette;videoOverlayPalette,
+                                --palette--;;filePalette'
+							],
+							File::FILETYPE_APPLICATION => [
+								'showitem' => '
+                                --palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+                                --palette--;;filePalette'
+							],
+						],
+					],
+				],
+				$GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
+			),
 		],
 		'award' => [
 			'exclude' => 0,
@@ -254,7 +305,7 @@ return [
 				'appearance' => [
 					'collapseAll' => TRUE,
 					'useSortable' => TRUE,
-					'newRecordLinkTitle' => $ll . ':pages.tx_booster_brand.add',
+					'newRecordLinkTitle' => $ll . ':tx_booster_domain_model_content.brand.add',
 					'showPossibleLocalizationRecords' => TRUE,
 					'showRemovedLocalizationRecords' => TRUE,
 					'showAllLocalizationLink' => TRUE,
@@ -280,7 +331,7 @@ return [
 				'appearance' => [
 					'collapseAll' => TRUE,
 					'useSortable' => TRUE,
-					'newRecordLinkTitle' => $ll . ':pages.tx_booster_offers.add',
+					'newRecordLinkTitle' => $ll . ':tx_booster_domain_model_content.offers.add',
 					'showPossibleLocalizationRecords' => TRUE,
 					'showRemovedLocalizationRecords' => TRUE,
 					'showAllLocalizationLink' => TRUE,
@@ -309,7 +360,7 @@ return [
 				'appearance' => [
 					'collapseAll' => TRUE,
 					'useSortable' => TRUE,
-					'newRecordLinkTitle' => $ll . ':pages.tx_booster_price_valid_until.add',
+					'newRecordLinkTitle' => $ll . ':tx_booster_domain_model_content.price_valid_until.add',
 					'showPossibleLocalizationRecords' => TRUE,
 					'showRemovedLocalizationRecords' => TRUE,
 					'showAllLocalizationLink' => TRUE,
@@ -326,6 +377,54 @@ return [
 				],
 			],
 		],
+		'aggregate_rating' => [
+			'exclude' => true,
+			'label' => $ll . ':tx_booster_domain_model_content.aggregate_rating',
+			'config' => [
+				'type' => 'inline',
+				'foreign_table' => 'tx_booster_domain_model_content',
+				'maxitems' => 1,
+				'appearance' => [
+					'collapseAll' => TRUE,
+					'useSortable' => TRUE,
+					'newRecordLinkTitle' => $ll . ':tx_booster_domain_model_content.aggregate_rating.add',
+					'showPossibleLocalizationRecords' => TRUE,
+					'showRemovedLocalizationRecords' => TRUE,
+					'showAllLocalizationLink' => TRUE,
+					'showSynchronizationLink' => TRUE,
+				],
+				'overrideChildTca' => [
+					'ctrl' => [
+						'label' => 'date',
+						'iconfile' => 'EXT:booster/Resources/Public/Icons/date.svg',
+					],
+					'types' => [
+						(string) Constants::CONTENT_TYPE_DEFAULT => $types[Constants::CONTENT_TYPE_AGGREGATE_RATING],
+					],
+				],
+			],
+		],
+		'rating_value' => [
+			'exclude' => 0,
+			'label'   => $ll . ':tx_booster_domain_model_content.rating_value',
+			'config'  => [
+				'type' => 'input',
+				'size' => 10,
+				'eval' => 'double2',
+				'max'  => 10
+			]
+		],
+		'review_count' => [
+			'exclude' => 0,
+			'label'   => $ll . ':tx_booster_domain_model_content.review_count',
+			'config'  => [
+				'type' => 'input',
+				'size' => 10,
+				'eval' => 'int',
+				'max'  => 10
+			]
+		],
+
 
 	],
 ];

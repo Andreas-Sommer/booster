@@ -12,12 +12,14 @@ use Belsignum\Booster\Constants;
 use Belsignum\Booster\Domain\Model\Content;
 use Belsignum\Booster\Domain\Model\Page;
 use Belsignum\Booster\Domain\Repository\PageRepository;
+use Brotkrueml\Schema\Model\Type\AggregateRating;
 use Brotkrueml\Schema\Model\Type\Offer;
 use Brotkrueml\Schema\Model\Type\Product;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use Brotkrueml\Schema\Model\Type\Answer;
 use Brotkrueml\Schema\Model\Type\FAQPage;
 use Brotkrueml\Schema\Model\Type\Question;
+use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use Brotkrueml\Schema\Manager\SchemaManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -34,6 +36,9 @@ class PreProcessHook
 	/** @var PageRepository */
 	protected $pageRepository;
 
+	/** @var \TYPO3\CMS\Extbase\Service\ImageService */
+	protected $imageService;
+
 	/**
 	 * @var SchemaManager
 	 */
@@ -49,6 +54,7 @@ class PreProcessHook
 			?: GeneralUtility::makeInstance(SchemaManager::class);
 		$this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
 		$this->pageRepository = $this->objectManager->get(PageRepository::class);
+		$this->imageService = $this->objectManager->get(ImageService::class);
 	}
 	public function execute(?array &$params, PageRenderer $pageRenderer): void
 	{
@@ -89,8 +95,27 @@ class PreProcessHook
 			$product->addProperty('description', $page->getProduct()->getText());
 			$product->addProperty('sku', $page->getProduct()->getSku());
 			$product->addProperty('mpn', $page->getProduct()->getMpn());
+			$product->addProperty('productID', $page->getProduct()->getProductId());
 			$brand = $page->getProduct()->getBrand();
 			$product->addProperty('brand', $brand ? $brand->getName() : '');
+			if($images = $page->getProduct()->getImages())
+			{
+				$imageCollection = [];
+				/** @var \TYPO3\CMS\Extbase\Domain\Model\FileReference $image */
+				foreach ($images as $_ => $image)
+				{
+					$img = $image->getOriginalResource();
+					$cropVariantCollection = \TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection::create((string)$img->getProperty('crop'));
+					$cropArea = $cropVariantCollection->getCropArea();
+					$processingInstructions = array(
+						'crop' => $cropArea->makeAbsoluteBasedOnFile($img),
+					);
+					$processedImage = $this->imageService->applyProcessingInstructions($img, $processingInstructions);
+					$imageUri = $this->imageService->getImageUri($processedImage, TRUE);
+					$imageCollection[] = $imageUri;
+				}
+				$product->addProperty('image', $imageCollection);
+			}
 
 			if(($offers = $page->getProduct()->getOffers()) instanceof Content)
 			{
@@ -101,6 +126,14 @@ class PreProcessHook
 				$priceValidUntil = $offers->getPriceValidUntil() ? $offers->getPriceValidUntil()->getDate()->format(Constants::DATETIME_FORMAT_8601) : NULL;
 				$offerObj->addProperty('priceValidUntil', $priceValidUntil);
 				$product->addProperty('offers', $offerObj);
+			}
+
+			if($aggregateRating = $page->getProduct()->getAggregateRating())
+			{
+				$aggregateRatingObj = new AggregateRating();
+				$aggregateRatingObj->addProperty('ratingValue', $aggregateRating->getRatingValue());
+				$aggregateRatingObj->addProperty('reviewCount', $aggregateRating->getReviewCount());
+				$product->addProperty('aggregateRating', $aggregateRatingObj);
 			}
 			$this->schemaManager->addType($product);
 		}

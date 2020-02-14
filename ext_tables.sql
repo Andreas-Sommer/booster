@@ -28,10 +28,13 @@ CREATE TABLE tx_booster_domain_model_content (
 	currency varchar(3) DEFAULT '' NOT NULL,
 	availability varchar(255) DEFAULT '' NOT NULL,
 	price double(11,2) DEFAULT '0.00' NOT NULL,
+	rating_value double(11,2) DEFAULT '0.00' NOT NULL,
+	review_count int(11) DEFAULT '0' NOT NULL,
 	images int(11) DEFAULT '0' NOT NULL,
 	brand int(11) DEFAULT '0' NOT NULL,
 	offers int(11) DEFAULT '0' NOT NULL,
 	price_valid_until int(11) DEFAULT '0' NOT NULL,
+	aggregate_rating int(11) DEFAULT '0' NOT NULL,
 
 	tstamp int(11) unsigned DEFAULT 0 NOT NULL,
 	crdate int(11) unsigned DEFAULT 0 NOT NULL,

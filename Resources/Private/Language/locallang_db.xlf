@@ -53,10 +53,10 @@
 				<source>Award</source>
 			</trans-unit>
 			<trans-unit id="tx_booster_domain_model_content.sku">
-				<source>SKU</source>
+				<source>Stock Keeping Unit (SKU)</source>
 			</trans-unit>
 			<trans-unit id="tx_booster_domain_model_content.mpn">
-				<source>MPN</source>
+				<source>Manufacturer Part Number (MPN)</source>
 			</trans-unit>
 			<trans-unit id="tx_booster_domain_model_content.gtin">
 				<source>GTIN</source>
@@ -65,7 +65,7 @@
 				<source>NSN</source>
 			</trans-unit>
 			<trans-unit id="tx_booster_domain_model_content.product_id">
-				<source>ProductID</source>
+				<source>Product identifier e.g. ISBN</source>
 			</trans-unit>
 			<trans-unit id="tx_booster_domain_model_content.price">
 				<source>Price</source>
@@ -84,6 +84,15 @@
 			</trans-unit>
 			<trans-unit id="tx_booster_domain_model_content.price_valid_until">
 				<source>Price valid until</source>
+			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.aggregate_rating">
+				<source>Aggregate rating</source>
+			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.rating_value">
+				<source>Rating value</source>
+			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.review_count">
+				<source>Review count</source>
 			</trans-unit>
 		</body>
 	</file>

@@ -30,6 +30,14 @@ class Content extends AbstractEntity
 	protected $date;
 
 	/**
+	 * images
+	 *
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference>
+	 * @cascade remove
+	 */
+	protected $images = null;
+
+	/**
 	 * @var string
 	 */
 	protected $url;
@@ -90,6 +98,16 @@ class Content extends AbstractEntity
 	protected $availability;
 
 	/**
+	 * @var double
+	 */
+	protected $ratingValue;
+
+	/**
+	 * @var int
+	 */
+	protected $reviewCount;
+
+	/**
 	 * @var \Belsignum\Booster\Domain\Model\Content
 	 */
 	protected $brand;
@@ -103,6 +121,20 @@ class Content extends AbstractEntity
 	 * @var \Belsignum\Booster\Domain\Model\Content
 	 */
 	protected $priceValidUntil;
+
+	/**
+	 * @var \Belsignum\Booster\Domain\Model\Content
+	 */
+	protected $aggregateRating;
+
+	public function __construct()
+	{
+		$this->initStorageObjects();
+	}
+
+	protected function initStorageObjects() {
+		$this->images = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+	}
 
 	/**
 	 * @return string
@@ -345,6 +377,38 @@ class Content extends AbstractEntity
 	}
 
 	/**
+	 * @return float
+	 */
+	public function getRatingValue(): float
+	{
+		return $this->ratingValue;
+	}
+
+	/**
+	 * @param float $ratingValue
+	 */
+	public function setRatingValue(float $ratingValue): void
+	{
+		$this->ratingValue = $ratingValue;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getReviewCount(): int
+	{
+		return $this->reviewCount;
+	}
+
+	/**
+	 * @param int $reviewCount
+	 */
+	public function setReviewCount(int $reviewCount): void
+	{
+		$this->reviewCount = $reviewCount;
+	}
+
+	/**
 	 * @return \Belsignum\Booster\Domain\Model\Content|null
 	 */
 	public function getBrand(): ?\Belsignum\Booster\Domain\Model\Content
@@ -392,6 +456,46 @@ class Content extends AbstractEntity
 		\Belsignum\Booster\Domain\Model\Content $priceValidUntil
 	): void {
 		$this->priceValidUntil = $priceValidUntil;
+	}
+
+	/**
+	 * Returns the images
+	 *
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference> $images
+	 */
+	public function getImages(): \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+	{
+		return $this->images;
+	}
+
+	/**
+	 * Sets the images
+	 *
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference> $images
+	 * @return void
+	 */
+	public function setImages(
+		\TYPO3\CMS\Extbase\Persistence\ObjectStorage $images
+	): void {
+		$this->images = $images;
+	}
+
+	/**
+	 * @return \Belsignum\Booster\Domain\Model\Content
+	 */
+	public function getAggregateRating(
+	): \Belsignum\Booster\Domain\Model\Content
+	{
+		return $this->aggregateRating;
+	}
+
+	/**
+	 * @param \Belsignum\Booster\Domain\Model\Content $aggregateRating
+	 */
+	public function setAggregateRating(
+		\Belsignum\Booster\Domain\Model\Content $aggregateRating
+	): void {
+		$this->aggregateRating = $aggregateRating;
 	}
 
 

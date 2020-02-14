@@ -20,6 +20,7 @@ class Constants
 	public const CONTENT_TYPE_DATE = 100;
 	public const CONTENT_TYPE_BRAND = 200;
 	public const CONTENT_TYPE_OFFERS = 210;
+	public const CONTENT_TYPE_AGGREGATE_RATING = 220;
 
 
 }
