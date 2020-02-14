@@ -46,9 +46,9 @@ abstract class AbstractPage extends AbstractEntity
 	}
 
 	/**
-	 * @return \Belsignum\Booster\Domain\Model\Content
+	 * @return \Belsignum\Booster\Domain\Model\Content|null
 	 */
-	public function getProduct(): \Belsignum\Booster\Domain\Model\Content
+	public function getProduct(): ?\Belsignum\Booster\Domain\Model\Content
 	{
 		return $this->product;
 	}
