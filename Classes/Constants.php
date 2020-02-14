@@ -21,6 +21,9 @@ class Constants
 	public const CONTENT_TYPE_BRAND = 200;
 	public const CONTENT_TYPE_OFFERS = 210;
 	public const CONTENT_TYPE_AGGREGATE_RATING = 220;
+	public const CONTENT_TYPE_REVIEW = 230;
+	public const CONTENT_TYPE_REVIEW_RATING = 240;
+	public const CONTENT_TYPE_AUTHOR = 250;
 
 
 }

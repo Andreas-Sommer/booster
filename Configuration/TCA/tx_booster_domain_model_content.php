@@ -6,18 +6,22 @@ use TYPO3\CMS\Core\Resource\File;
 
 $ll = 'LLL:EXT:booster/Resources/Private/Language/locallang_db.xlf';
 $types = [
-	(string) Constants::CONTENT_TYPE_DEFAULT => ['showitem' => 'hidden, name, text, url, slogan, color, award, rating_value, review_count, --palette--;numbers;numbers, brand, offers, aggregate_rating, images'],
+	(string) Constants::CONTENT_TYPE_DEFAULT => ['showitem' => 'hidden, name, text, double_value, count, select, url, slogan, condition, award, --palette--;numbers;numbers, brand, offers, aggregate_rating, images'],
 	(string) Constants::CONTENT_TYPE_FAQ => ['showitem' => 'name, text'],
-	(string) Constants::CONTENT_TYPE_PRODUCT => ['showitem' => 'name, text, url, slogan, color, award, --palette--;numbers;numbers, brand, offers, aggregate_rating, images'],
+	(string) Constants::CONTENT_TYPE_PRODUCT => ['showitem' => 'name, text, url, slogan, condition, award, --palette--;numbers;numbers, brand, offers, aggregate_rating, review, images'],
 	(string) Constants::CONTENT_TYPE_BRAND => ['showitem' => 'name'],
 	(string) Constants::CONTENT_TYPE_DATE => ['showitem' => 'date'],
-	(string) Constants::CONTENT_TYPE_OFFERS => ['showitem' => 'price, currency, price_valid_until, availability, url'],
-	(string) Constants::CONTENT_TYPE_AGGREGATE_RATING => ['showitem' => 'rating_value, review_count'],
+	(string) Constants::CONTENT_TYPE_OFFERS => ['showitem' => 'double_value, currency, price_valid_until, url, select, condition, brand'],
+	(string) Constants::CONTENT_TYPE_AGGREGATE_RATING => ['showitem' => 'double_value, count'],
+	(string) Constants::CONTENT_TYPE_REVIEW => ['showitem' => 'review_rating, author'],
+	(string) Constants::CONTENT_TYPE_REVIEW_RATING => ['showitem' => 'double_value, count'],
+	(string) Constants::CONTENT_TYPE_AUTHOR => ['showitem' => 'name'],
 ];
 return [
 	'ctrl' => [
 		'title' => $ll . ':tx_booster_domain_model_content',
 		'label' => 'name',
+		'formattedLabel_userFunc' => \Belsignum\Booster\Userfuncs\ContentTca::class . '->dynamicTitleByType',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
 		'languageField' => 'sys_language_uid',
@@ -175,7 +179,7 @@ return [
 				'max'  => 256
 			]
 		],
-		'color' => [
+		'condition' => [
 			'exclude' => 0,
 			'label'   => $ll . ':tx_booster_domain_model_content.color',
 			'config'  => [
@@ -256,16 +260,6 @@ return [
 				'max'  => 256
 			]
 		],
-		'price' => [
-			'exclude' => 0,
-			'label'   => $ll . ':tx_booster_domain_model_content.price',
-			'config'  => [
-				'type' => 'input',
-				'size' => 10,
-				'eval' => 'trim,double2',
-				'max'  => 10
-			]
-		],
 		'currency' => [
 			'exclude' => 0,
 			'label'   => $ll . ':tx_booster_domain_model_content.currency',
@@ -276,22 +270,15 @@ return [
 				'max'  => 3
 			]
 		],
-		'availability' => [
+		'select' => [
 			'exclude' => 0,
-			'label'   => $ll . ':tx_booster_domain_model_content.availability',
+			'label'   => $ll . ':tx_booster_domain_model_content.select',
 			'config'  => [
 				'type' => 'select',
+				'renderType' => 'selectSingle',
+				'maxItems' => 1,
 				'items' => [
 					['', ''],
-					['Discontinued', 'Discontinued'],
-					['InStock', 'InStock'],
-					['InStoreOnly', 'InStoreOnly'],
-					['LimitedAvailability', 'LimitedAvailability'],
-					['OnlineOnly', 'OnlineOnly'],
-					['OutOfStock', 'OutOfStock'],
-					['PreOrder', 'PreOrder'],
-					['PreSale', 'PreSale'],
-					['SoldOut', 'SoldOut'],
 				]
 			]
 		],
@@ -339,13 +326,55 @@ return [
 				],
 				'overrideChildTca' => [
 					'ctrl' => [
-						'label' => 'price',
+						'label' => 'double_value',
 						'label_alt' => 'currency',
 						'label_alt_force' => TRUE,
 						'iconfile' => 'EXT:booster/Resources/Public/Icons/offers.svg',
 					],
 					'types' => [
 						(string) Constants::CONTENT_TYPE_DEFAULT => $types[Constants::CONTENT_TYPE_OFFERS],
+					],
+					'columns' => [
+						'double_value' => [
+							'label' => $ll . ':tx_booster_domain_model_content.price',
+						],
+						'brand' => [
+							'label' => $ll . ':tx_booster_domain_model_content.seller',
+						],
+						'select' => [
+							'label' => $ll . ':tx_booster_domain_model_content.availability',
+							'config' => [
+								'type' => 'select',
+								'renderType' => 'selectSingle',
+								'items' => [
+									['', ''],
+									['Discontinued', 'Discontinued'],
+									['InStock', 'InStock'],
+									['InStoreOnly', 'InStoreOnly'],
+									['LimitedAvailability', 'LimitedAvailability'],
+									['OnlineOnly', 'OnlineOnly'],
+									['OutOfStock', 'OutOfStock'],
+									['PreOrder', 'PreOrder'],
+									['PreSale', 'PreSale'],
+									['SoldOut', 'SoldOut'],
+								]
+							]
+						],
+						'condition' => [
+							'label' => $ll . ':tx_booster_domain_model_content.item_condition',
+							'config' => [
+								'type' => 'select',
+								'renderType' => 'selectSingle',
+								'size' => 1,
+								'items' => [
+									['', ''],
+									['DamagedCondition', 'DamagedCondition'],
+									['NewCondition', 'NewCondition'],
+									['RefurbishedCondition', 'RefurbishedCondition'],
+									['UsedCondition', 'UsedCondition'],
+								]
+							]
+						],
 					],
 				],
 			],
@@ -369,7 +398,7 @@ return [
 				'overrideChildTca' => [
 					'ctrl' => [
 						'label' => 'date',
-						'iconfile' => 'EXT:booster/Resources/Public/Icons/date.svg',
+						'iconfile' => 'EXT:booster/Resources/Public/Icons/price_valid_until.svg',
 					],
 					'types' => [
 						(string) Constants::CONTENT_TYPE_DEFAULT => $types[Constants::CONTENT_TYPE_DATE],
@@ -395,18 +424,28 @@ return [
 				],
 				'overrideChildTca' => [
 					'ctrl' => [
-						'label' => 'date',
-						'iconfile' => 'EXT:booster/Resources/Public/Icons/date.svg',
+						'label' => 'double_value',
+						'label_alt' => 'count',
+						'label_alt_force' => TRUE,
+						'iconfile' => 'EXT:booster/Resources/Public/Icons/aggregate_rating.svg',
 					],
 					'types' => [
 						(string) Constants::CONTENT_TYPE_DEFAULT => $types[Constants::CONTENT_TYPE_AGGREGATE_RATING],
 					],
+					'columns' => [
+						'double_value' => [
+							'label' => $ll . ':tx_booster_domain_model_content.rating_value',
+						],
+						'count' => [
+							'label' => $ll . ':tx_booster_domain_model_content.review_count',
+						],
+					],
 				],
 			],
 		],
-		'rating_value' => [
+		'double_value' => [
 			'exclude' => 0,
-			'label'   => $ll . ':tx_booster_domain_model_content.rating_value',
+			'label'   => $ll . ':tx_booster_domain_model_content.double_value',
 			'config'  => [
 				'type' => 'input',
 				'size' => 10,
@@ -414,9 +453,9 @@ return [
 				'max'  => 10
 			]
 		],
-		'review_count' => [
+		'count' => [
 			'exclude' => 0,
-			'label'   => $ll . ':tx_booster_domain_model_content.review_count',
+			'label'   => $ll . ':tx_booster_domain_model_content.count',
 			'config'  => [
 				'type' => 'input',
 				'size' => 10,
@@ -424,7 +463,101 @@ return [
 				'max'  => 10
 			]
 		],
-
-
+		'review' => [
+			'exclude' => true,
+			'label' => $ll . ':tx_booster_domain_model_content.review',
+			'config' => [
+				'type' => 'inline',
+				'foreign_table' => 'tx_booster_domain_model_content',
+				'maxitems' => 1,
+				'appearance' => [
+					'collapseAll' => TRUE,
+					'useSortable' => TRUE,
+					'newRecordLinkTitle' => $ll . ':tx_booster_domain_model_content.review.add',
+					'showPossibleLocalizationRecords' => TRUE,
+					'showRemovedLocalizationRecords' => TRUE,
+					'showAllLocalizationLink' => TRUE,
+					'showSynchronizationLink' => TRUE,
+				],
+				'overrideChildTca' => [
+					'ctrl' => [
+						'label_static' => 'Review',
+						'label' => 'review_rating',
+						'label_alt' => 'author',
+						'label_alt_force' => TRUE,
+						'iconfile' => 'EXT:booster/Resources/Public/Icons/review.svg',
+					],
+					'types' => [
+						(string) Constants::CONTENT_TYPE_DEFAULT => $types[Constants::CONTENT_TYPE_REVIEW],
+					],
+				],
+			],
+		],
+		'review_rating' => [
+			'exclude' => true,
+			'label' => $ll . ':tx_booster_domain_model_content.review',
+			'config' => [
+				'type' => 'inline',
+				'foreign_table' => 'tx_booster_domain_model_content',
+				'maxitems' => 1,
+				'appearance' => [
+					'collapseAll' => TRUE,
+					'useSortable' => TRUE,
+					'newRecordLinkTitle' => $ll . ':tx_booster_domain_model_content.review.add',
+					'showPossibleLocalizationRecords' => TRUE,
+					'showRemovedLocalizationRecords' => TRUE,
+					'showAllLocalizationLink' => TRUE,
+					'showSynchronizationLink' => TRUE,
+				],
+				'overrideChildTca' => [
+					'ctrl' => [
+						'label' => 'double_value',
+						'label_alt'=> 'count',
+						'label_alt_force' => TRUE,
+						'iconfile'  => 'EXT:booster/Resources/Public/Icons/review.svg',
+					],
+					'types' => [
+						(string) Constants::CONTENT_TYPE_DEFAULT => $types[Constants::CONTENT_TYPE_REVIEW_RATING],
+					],
+					'columns' => [
+						'double_value' => [
+							'label' => $ll . ':tx_booster_domain_model_content.rating_value',
+						],
+						'count' => [
+							'label' => $ll . ':tx_booster_domain_model_content.best_rating',
+							'config' => [
+								'eval' => 'double2',
+							]
+						],
+					],
+				],
+			],
+		],
+		'author' => [
+			'exclude' => true,
+			'label' => $ll . ':tx_booster_domain_model_content.author',
+			'config' => [
+				'type' => 'inline',
+				'foreign_table' => 'tx_booster_domain_model_content',
+				'maxitems' => 1,
+				'appearance' => [
+					'collapseAll' => TRUE,
+					'useSortable' => TRUE,
+					'newRecordLinkTitle' => $ll . ':tx_booster_domain_model_content.author.add',
+					'showPossibleLocalizationRecords' => TRUE,
+					'showRemovedLocalizationRecords' => TRUE,
+					'showAllLocalizationLink' => TRUE,
+					'showSynchronizationLink' => TRUE,
+				],
+				'overrideChildTca' => [
+					'ctrl' => [
+						'iconfile' => 'EXT:booster/Resources/Public/Icons/author.svg',
+					],
+					'types' => [
+						(string) Constants::CONTENT_TYPE_DEFAULT => $types[Constants::CONTENT_TYPE_AUTHOR],
+					],
+				],
+			],
+		],
 	],
 ];

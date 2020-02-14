@@ -43,6 +43,9 @@
 			<trans-unit id="tx_booster_domain_model_content.slogan">
 				<source>Slogan</source>
 			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.condition">
+				<source>Condition</source>
+			</trans-unit>
 			<trans-unit id="tx_booster_domain_model_content.color">
 				<source>Color</source>
 			</trans-unit>
@@ -76,8 +79,14 @@
 			<trans-unit id="tx_booster_domain_model_content.availability">
 				<source>Availability</source>
 			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.item_condition">
+				<source>Item Condition</source>
+			</trans-unit>
 			<trans-unit id="tx_booster_domain_model_content.brand">
 				<source>Brand</source>
+			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.seller">
+				<source>Seller</source>
 			</trans-unit>
 			<trans-unit id="tx_booster_domain_model_content.offers">
 				<source>Offers</source>
@@ -88,11 +97,26 @@
 			<trans-unit id="tx_booster_domain_model_content.aggregate_rating">
 				<source>Aggregate rating</source>
 			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.double_value">
+				<source>Double value</source>
+			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.count">
+				<source>Count</source>
+			</trans-unit>
 			<trans-unit id="tx_booster_domain_model_content.rating_value">
 				<source>Rating value</source>
 			</trans-unit>
 			<trans-unit id="tx_booster_domain_model_content.review_count">
 				<source>Review count</source>
+			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.review">
+				<source>Review</source>
+			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.best_rating">
+				<source>Best rating</source>
+			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.author">
+				<source>Author</source>
 			</trans-unit>
 		</body>
 	</file>

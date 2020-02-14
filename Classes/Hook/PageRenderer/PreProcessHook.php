@@ -13,8 +13,13 @@ use Belsignum\Booster\Domain\Model\Content;
 use Belsignum\Booster\Domain\Model\Page;
 use Belsignum\Booster\Domain\Repository\PageRepository;
 use Brotkrueml\Schema\Model\Type\AggregateRating;
+use Brotkrueml\Schema\Model\Type\Brand;
 use Brotkrueml\Schema\Model\Type\Offer;
+use Brotkrueml\Schema\Model\Type\Organization;
+use Brotkrueml\Schema\Model\Type\Person;
 use Brotkrueml\Schema\Model\Type\Product;
+use Brotkrueml\Schema\Model\Type\Rating;
+use Brotkrueml\Schema\Model\Type\Review;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use Brotkrueml\Schema\Model\Type\Answer;
 use Brotkrueml\Schema\Model\Type\FAQPage;
@@ -93,11 +98,19 @@ class PreProcessHook
 			$product = new Product();
 			$product->addProperty('name', $page->getProduct()->getName());
 			$product->addProperty('description', $page->getProduct()->getText());
+			$product->addProperty('slogan', $page->getProduct()->getSlogan());
+			$product->addProperty('color', $page->getProduct()->getCondition());
+			$product->addProperty('award', $page->getProduct()->getAward());
 			$product->addProperty('sku', $page->getProduct()->getSku());
 			$product->addProperty('mpn', $page->getProduct()->getMpn());
 			$product->addProperty('productID', $page->getProduct()->getProductId());
-			$brand = $page->getProduct()->getBrand();
-			$product->addProperty('brand', $brand ? $brand->getName() : '');
+			if($brand = $page->getProduct()->getBrand())
+			{
+				$brandObj = new Brand();
+				$brandObj->addProperty('name', $brand->getName());
+				$product->addProperty('brand', $brandObj);
+			}
+
 			if($images = $page->getProduct()->getImages())
 			{
 				$imageCollection = [];
@@ -121,19 +134,45 @@ class PreProcessHook
 			{
 				$offerObj = new Offer();
 				$offerObj->addProperty('priceCurrency', $offers->getCurrency());
-				$offerObj->addProperty('price', $offers->getPrice());
-				$offerObj->addProperty('availability', $offers->getAvailability());
+				$offerObj->addProperty('price', $offers->getDoubleValue());
+				$offerObj->addProperty('availability', $offers->prependSchemaUri($offers->getSelect()));
+				$offerObj->addProperty('itemCondition', $offers->prependSchemaUri($offers->getCondition()));
+				$offerObj->addProperty('url', $offers->getUrl());
 				$priceValidUntil = $offers->getPriceValidUntil() ? $offers->getPriceValidUntil()->getDate()->format(Constants::DATETIME_FORMAT_8601) : NULL;
 				$offerObj->addProperty('priceValidUntil', $priceValidUntil);
+				if($seller = $offers->getBrand())
+				{
+					$organization = new Organization();
+					$organization->addProperty('name', $seller->getName());
+					$offerObj->addProperty('seller', $organization);
+				}
 				$product->addProperty('offers', $offerObj);
 			}
 
 			if($aggregateRating = $page->getProduct()->getAggregateRating())
 			{
 				$aggregateRatingObj = new AggregateRating();
-				$aggregateRatingObj->addProperty('ratingValue', $aggregateRating->getRatingValue());
-				$aggregateRatingObj->addProperty('reviewCount', $aggregateRating->getReviewCount());
+				$aggregateRatingObj->addProperty('ratingValue', $aggregateRating->getDoubleValue());
+				$aggregateRatingObj->addProperty('reviewCount', $aggregateRating->getCount());
 				$product->addProperty('aggregateRating', $aggregateRatingObj);
+			}
+			if($review = $page->getProduct()->getReview())
+			{
+				$reviewObj = new Review();
+				if($reviewRating = $review->getReviewRating())
+				{
+					$rating = new Rating();
+					$rating->addProperty('ratingValue', $reviewRating->getDoubleValue());
+					$rating->addProperty('bestRating', $reviewRating->getCount());
+					$reviewObj->addProperty('reviewRating', $rating);
+				}
+				if($author = $review->getAuthor())
+				{
+					$person = new Person();
+					$person->addProperty('name', $author->getName());
+					$reviewObj->addProperty('author', $person);
+				}
+				$product->addProperty('review', $reviewObj);
 			}
 			$this->schemaManager->addType($product);
 		}

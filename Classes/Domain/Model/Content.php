@@ -50,7 +50,7 @@ class Content extends AbstractEntity
 	/**
 	 * @var string
 	 */
-	protected $color;
+	protected $condition;
 
 	/**
 	 * @var string
@@ -95,17 +95,17 @@ class Content extends AbstractEntity
 	/**
 	 * @var string
 	 */
-	protected $availability;
+	protected $select;
 
 	/**
-	 * @var double
+	 * @var float
 	 */
-	protected $ratingValue;
+	protected $doubleValue;
 
 	/**
-	 * @var int
+	 * @var float
 	 */
-	protected $reviewCount;
+	protected $count;
 
 	/**
 	 * @var \Belsignum\Booster\Domain\Model\Content
@@ -126,6 +126,21 @@ class Content extends AbstractEntity
 	 * @var \Belsignum\Booster\Domain\Model\Content
 	 */
 	protected $aggregateRating;
+
+	/**
+	 * @var \Belsignum\Booster\Domain\Model\Content
+	 */
+	protected $review;
+
+	/**
+	 * @var \Belsignum\Booster\Domain\Model\Content
+	 */
+	protected $reviewRating;
+
+	/**
+	 * @var \Belsignum\Booster\Domain\Model\Content
+	 */
+	protected $author;
 
 	public function __construct()
 	{
@@ -219,17 +234,17 @@ class Content extends AbstractEntity
 	/**
 	 * @return string
 	 */
-	public function getColor(): string
+	public function getCondition(): string
 	{
-		return $this->color;
+		return $this->condition;
 	}
 
 	/**
-	 * @param string $color
+	 * @param string $condition
 	 */
-	public function setColor(string $color): void
+	public function setCondition(string $condition): void
 	{
-		$this->color = $color;
+		$this->condition = $condition;
 	}
 
 	/**
@@ -363,49 +378,49 @@ class Content extends AbstractEntity
 	/**
 	 * @return string
 	 */
-	public function getAvailability(): string
+	public function getSelect(): string
 	{
-		return Constants::SCHEMA_ORG_URI . $this->availability;
+		return $this->select;
 	}
 
 	/**
-	 * @param string $availability
+	 * @param string $select
 	 */
-	public function setAvailability(string $availability): void
+	public function setSelect(string $select): void
 	{
-		$this->availability = $availability;
+		$this->select = $select;
 	}
 
 	/**
 	 * @return float
 	 */
-	public function getRatingValue(): float
+	public function getDoubleValue(): float
 	{
-		return $this->ratingValue;
+		return $this->doubleValue;
 	}
 
 	/**
-	 * @param float $ratingValue
+	 * @param float $doubleValue
 	 */
-	public function setRatingValue(float $ratingValue): void
+	public function setDoubleValue(float $doubleValue): void
 	{
-		$this->ratingValue = $ratingValue;
+		$this->doubleValue = $doubleValue;
 	}
 
 	/**
-	 * @return int
+	 * @return float
 	 */
-	public function getReviewCount(): int
+	public function getCount(): float
 	{
-		return $this->reviewCount;
+		return $this->count;
 	}
 
 	/**
-	 * @param int $reviewCount
+	 * @param float $count
 	 */
-	public function setReviewCount(int $reviewCount): void
+	public function setCount(float $count): void
 	{
-		$this->reviewCount = $reviewCount;
+		$this->count = $count;
 	}
 
 	/**
@@ -498,5 +513,62 @@ class Content extends AbstractEntity
 		$this->aggregateRating = $aggregateRating;
 	}
 
+	/**
+	 * @return \Belsignum\Booster\Domain\Model\Content
+	 */
+	public function getReview(): \Belsignum\Booster\Domain\Model\Content
+	{
+		return $this->review;
+	}
 
+	/**
+	 * @param \Belsignum\Booster\Domain\Model\Content $review
+	 */
+	public function setReview(\Belsignum\Booster\Domain\Model\Content $review
+	): void {
+		$this->review = $review;
+	}
+
+	/**
+	 * @return \Belsignum\Booster\Domain\Model\Content
+	 */
+	public function getReviewRating(): \Belsignum\Booster\Domain\Model\Content
+	{
+		return $this->reviewRating;
+	}
+
+	/**
+	 * @param \Belsignum\Booster\Domain\Model\Content $reviewRating
+	 */
+	public function setReviewRating(
+		\Belsignum\Booster\Domain\Model\Content $reviewRating
+	): void {
+		$this->reviewRating = $reviewRating;
+	}
+
+	/**
+	 * @return \Belsignum\Booster\Domain\Model\Content
+	 */
+	public function getAuthor(): \Belsignum\Booster\Domain\Model\Content
+	{
+		return $this->author;
+	}
+
+	/**
+	 * @param \Belsignum\Booster\Domain\Model\Content $author
+	 */
+	public function setAuthor(\Belsignum\Booster\Domain\Model\Content $author
+	): void {
+		$this->author = $author;
+	}
+
+	/**
+	 * Prepend Schema URI
+	 * @param string $value
+	 * @return string
+	 */
+	public function prependSchemaUri(string $value): string
+	{
+		return Constants::SCHEMA_ORG_URI . $value;
+	}
 }
