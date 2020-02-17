@@ -113,7 +113,8 @@ class Content extends AbstractEntity
 	protected $brand;
 
 	/**
-	 * @var \Belsignum\Booster\Domain\Model\Content
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Belsignum\Booster\Domain\Model\Content>
+	 * @cascade remove
 	 */
 	protected $offers;
 
@@ -148,6 +149,7 @@ class Content extends AbstractEntity
 	}
 
 	protected function initStorageObjects() {
+		$this->offers = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$this->images = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 	}
 
@@ -440,17 +442,17 @@ class Content extends AbstractEntity
 	}
 
 	/**
-	 * @return \Belsignum\Booster\Domain\Model\Content|null
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Belsignum\Booster\Domain\Model\Content>
 	 */
-	public function getOffers(): ?\Belsignum\Booster\Domain\Model\Content
+	public function getOffers(): \TYPO3\CMS\Extbase\Persistence\ObjectStorage
 	{
 		return $this->offers;
 	}
 
 	/**
-	 * @param \Belsignum\Booster\Domain\Model\Content $offers
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Belsignum\Booster\Domain\Model\Content> $offers
 	 */
-	public function setOffers(\Belsignum\Booster\Domain\Model\Content $offers
+	public function setOffers(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $offers
 	): void {
 		$this->offers = $offers;
 	}
@@ -496,10 +498,10 @@ class Content extends AbstractEntity
 	}
 
 	/**
-	 * @return \Belsignum\Booster\Domain\Model\Content
+	 * @return \Belsignum\Booster\Domain\Model\Content|null
 	 */
 	public function getAggregateRating(
-	): \Belsignum\Booster\Domain\Model\Content
+	): ?\Belsignum\Booster\Domain\Model\Content
 	{
 		return $this->aggregateRating;
 	}
@@ -514,9 +516,9 @@ class Content extends AbstractEntity
 	}
 
 	/**
-	 * @return \Belsignum\Booster\Domain\Model\Content
+	 * @return \Belsignum\Booster\Domain\Model\Content|null
 	 */
-	public function getReview(): \Belsignum\Booster\Domain\Model\Content
+	public function getReview(): ?\Belsignum\Booster\Domain\Model\Content
 	{
 		return $this->review;
 	}
@@ -530,9 +532,9 @@ class Content extends AbstractEntity
 	}
 
 	/**
-	 * @return \Belsignum\Booster\Domain\Model\Content
+	 * @return \Belsignum\Booster\Domain\Model\Content|null
 	 */
-	public function getReviewRating(): \Belsignum\Booster\Domain\Model\Content
+	public function getReviewRating(): ?\Belsignum\Booster\Domain\Model\Content
 	{
 		return $this->reviewRating;
 	}
@@ -547,9 +549,9 @@ class Content extends AbstractEntity
 	}
 
 	/**
-	 * @return \Belsignum\Booster\Domain\Model\Content
+	 * @return \Belsignum\Booster\Domain\Model\Content|null
 	 */
-	public function getAuthor(): \Belsignum\Booster\Domain\Model\Content
+	public function getAuthor(): ?\Belsignum\Booster\Domain\Model\Content
 	{
 		return $this->author;
 	}

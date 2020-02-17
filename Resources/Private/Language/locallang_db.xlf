@@ -73,6 +73,12 @@
 			<trans-unit id="tx_booster_domain_model_content.price">
 				<source>Price</source>
 			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.low_price">
+				<source>Low Price</source>
+			</trans-unit>
+			<trans-unit id="tx_booster_domain_model_content.high_price">
+				<source>High Price</source>
+			</trans-unit>
 			<trans-unit id="tx_booster_domain_model_content.currency">
 				<source>Currency</source>
 			</trans-unit>

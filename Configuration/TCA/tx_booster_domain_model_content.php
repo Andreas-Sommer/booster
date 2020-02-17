@@ -6,12 +6,12 @@ use TYPO3\CMS\Core\Resource\File;
 
 $ll = 'LLL:EXT:booster/Resources/Private/Language/locallang_db.xlf';
 $types = [
-	(string) Constants::CONTENT_TYPE_DEFAULT => ['showitem' => 'hidden, name, text, double_value, count, select, url, slogan, condition, award, --palette--;numbers;numbers, brand, offers, aggregate_rating, images'],
+	(string) Constants::CONTENT_TYPE_DEFAULT => ['showitem' => 'hidden, name, text, price, double_value, count, select, url, slogan, condition, award, --palette--;numbers;numbers, brand, offers, aggregate_rating, images'],
 	(string) Constants::CONTENT_TYPE_FAQ => ['showitem' => 'name, text'],
 	(string) Constants::CONTENT_TYPE_PRODUCT => ['showitem' => 'name, text, url, slogan, condition, award, --palette--;numbers;numbers, brand, offers, aggregate_rating, review, images'],
 	(string) Constants::CONTENT_TYPE_BRAND => ['showitem' => 'name'],
 	(string) Constants::CONTENT_TYPE_DATE => ['showitem' => 'date'],
-	(string) Constants::CONTENT_TYPE_OFFERS => ['showitem' => 'double_value, currency, price_valid_until, url, select, condition, brand'],
+	(string) Constants::CONTENT_TYPE_OFFERS => ['showitem' => 'price, double_value, count, currency, price_valid_until, url, select, condition, brand'],
 	(string) Constants::CONTENT_TYPE_AGGREGATE_RATING => ['showitem' => 'double_value, count'],
 	(string) Constants::CONTENT_TYPE_REVIEW => ['showitem' => 'review_rating, author'],
 	(string) Constants::CONTENT_TYPE_REVIEW_RATING => ['showitem' => 'double_value, count'],
@@ -314,7 +314,7 @@ return [
 			'config' => [
 				'type' => 'inline',
 				'foreign_table' => 'tx_booster_domain_model_content',
-				'maxitems' => 1,
+				'maxitems' => 999,
 				'appearance' => [
 					'collapseAll' => TRUE,
 					'useSortable' => TRUE,
@@ -326,8 +326,8 @@ return [
 				],
 				'overrideChildTca' => [
 					'ctrl' => [
-						'label' => 'double_value',
-						'label_alt' => 'currency',
+						'label' => 'price',
+						'label_alt' => 'double_value, count, currency',
 						'label_alt_force' => TRUE,
 						'iconfile' => 'EXT:booster/Resources/Public/Icons/offers.svg',
 					],
@@ -336,7 +336,10 @@ return [
 					],
 					'columns' => [
 						'double_value' => [
-							'label' => $ll . ':tx_booster_domain_model_content.price',
+							'label' => $ll . ':tx_booster_domain_model_content.low_price',
+						],
+						'count' => [
+							'label' => $ll . ':tx_booster_domain_model_content.high_price',
 						],
 						'brand' => [
 							'label' => $ll . ':tx_booster_domain_model_content.seller',
@@ -438,10 +441,23 @@ return [
 						],
 						'count' => [
 							'label' => $ll . ':tx_booster_domain_model_content.review_count',
+							'config' => [
+								'eval' => 'int'
+							]
 						],
 					],
 				],
 			],
+		],
+		'price' => [
+			'exclude' => 0,
+			'label'   => $ll . ':tx_booster_domain_model_content.price',
+			'config'  => [
+				'type' => 'input',
+				'size' => 10,
+				'eval' => 'double2',
+				'max'  => 10
+			]
 		],
 		'double_value' => [
 			'exclude' => 0,
@@ -459,7 +475,7 @@ return [
 			'config'  => [
 				'type' => 'input',
 				'size' => 10,
-				'eval' => 'int',
+				'eval' => 'double2',
 				'max'  => 10
 			]
 		],
@@ -525,9 +541,6 @@ return [
 						],
 						'count' => [
 							'label' => $ll . ':tx_booster_domain_model_content.best_rating',
-							'config' => [
-								'eval' => 'double2',
-							]
 						],
 					],
 				],

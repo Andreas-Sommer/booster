@@ -12,6 +12,7 @@ use Belsignum\Booster\Constants;
 use Belsignum\Booster\Domain\Model\Content;
 use Belsignum\Booster\Domain\Model\Page;
 use Belsignum\Booster\Domain\Repository\PageRepository;
+use Brotkrueml\Schema\Model\Type\AggregateOffer;
 use Brotkrueml\Schema\Model\Type\AggregateRating;
 use Brotkrueml\Schema\Model\Type\Brand;
 use Brotkrueml\Schema\Model\Type\Offer;
@@ -24,6 +25,7 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use Brotkrueml\Schema\Model\Type\Answer;
 use Brotkrueml\Schema\Model\Type\FAQPage;
 use Brotkrueml\Schema\Model\Type\Question;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use Brotkrueml\Schema\Manager\SchemaManager;
@@ -130,23 +132,41 @@ class PreProcessHook
 				$product->addProperty('image', $imageCollection);
 			}
 
-			if(($offers = $page->getProduct()->getOffers()) instanceof Content)
+			if(($offers = $page->getProduct()->getOffers()) instanceof ObjectStorage)
 			{
-				$offerObj = new Offer();
-				$offerObj->addProperty('priceCurrency', $offers->getCurrency());
-				$offerObj->addProperty('price', $offers->getDoubleValue());
-				$offerObj->addProperty('availability', $offers->prependSchemaUri($offers->getSelect()));
-				$offerObj->addProperty('itemCondition', $offers->prependSchemaUri($offers->getCondition()));
-				$offerObj->addProperty('url', $offers->getUrl());
-				$priceValidUntil = $offers->getPriceValidUntil() ? $offers->getPriceValidUntil()->getDate()->format(Constants::DATETIME_FORMAT_8601) : NULL;
-				$offerObj->addProperty('priceValidUntil', $priceValidUntil);
-				if($seller = $offers->getBrand())
+				/**
+				 * @var Content $offer
+				 */
+				foreach ($offers as $_ => $offer)
 				{
-					$organization = new Organization();
-					$organization->addProperty('name', $seller->getName());
-					$offerObj->addProperty('seller', $organization);
+					$offerObj = new AggregateOffer();
+					$offerObj->addProperty('offerCount', $offers->count());
+					$offerObj->addProperty('priceCurrency', $offer->getCurrency());
+					if($offer->getPrice() > 0)
+					{
+						$offerObj->addProperty('price', $offer->getPrice());
+					}
+					if($offer->getDoubleValue() > 0)
+					{
+						$offerObj->addProperty('lowPrice', $offer->getDoubleValue());
+					}
+					if($offer->getCount() > 0)
+					{
+						$offerObj->addProperty('highPrice', $offer->getCount());
+					}
+					$offerObj->addProperty('availability', $offer->prependSchemaUri($offer->getSelect()));
+					$offerObj->addProperty('itemCondition', $offer->prependSchemaUri($offer->getCondition()));
+					$offerObj->addProperty('url', $offer->getUrl());
+					$priceValidUntil = $offer->getPriceValidUntil() ? $offer->getPriceValidUntil()->getDate()->format(Constants::DATETIME_FORMAT_8601) : NULL;
+					$offerObj->addProperty('priceValidUntil', $priceValidUntil);
+					if($seller = $offer->getBrand())
+					{
+						$organization = new Organization();
+						$organization->addProperty('name', $seller->getName());
+						$offerObj->addProperty('seller', $organization);
+					}
+					$product->addProperty('offers', $offerObj);
 				}
-				$product->addProperty('offers', $offerObj);
 			}
 
 			if($aggregateRating = $page->getProduct()->getAggregateRating())

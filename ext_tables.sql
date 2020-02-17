@@ -17,6 +17,7 @@ CREATE TABLE tx_booster_domain_model_content (
 	text text NOT NULL,
 	date int(11) DEFAULT '0' NOT NULL,
 	select varchar(255) DEFAULT '' NOT NULL,
+	price double(11,2) DEFAULT '0.00' NOT NULL,
 	double_value double(11,2) DEFAULT '0.00' NOT NULL,
 	count double(11,2) DEFAULT '0.00' NOT NULL,
 	condition varchar(255) DEFAULT '' NOT NULL,
@@ -33,7 +34,7 @@ CREATE TABLE tx_booster_domain_model_content (
 
 	images int(11) DEFAULT '0' NOT NULL,
 	brand int(11) DEFAULT '0' NOT NULL,
-	offers int(11) DEFAULT '0' NOT NULL,
+	offers mediumtext,
 	price_valid_until int(11) DEFAULT '0' NOT NULL,
 	aggregate_rating int(11) DEFAULT '0' NOT NULL,
 	review int(11) DEFAULT '0' NOT NULL,
