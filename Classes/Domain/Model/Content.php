@@ -442,9 +442,9 @@ class Content extends AbstractEntity
 	}
 
 	/**
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Belsignum\Booster\Domain\Model\Content>
+	 * @return null|\TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Belsignum\Booster\Domain\Model\Content>
 	 */
-	public function getOffers(): \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+	public function getOffers(): ?\TYPO3\CMS\Extbase\Persistence\ObjectStorage
 	{
 		return $this->offers;
 	}
