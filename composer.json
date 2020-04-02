@@ -1,5 +1,6 @@
 {
   "name": "belsignum/booster",
+  "type": "typo3-cms-extension",
   "version": "1.0.0",
   "description": "Schema.org structured data for Typo3 and Google APIs",
   "license": "GPL-2.0-or-later",
@@ -31,6 +32,11 @@
   "autoload": {
     "psr-4": {
       "Belsignum\\Booster\\": "Classes/"
+    }
+  },
+  "extra": {
+    "typo3/cms": {
+      "extension-key": "booster"
     }
   }
 }
