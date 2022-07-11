@@ -8,6 +8,7 @@
 
 namespace Belsignum\Booster\Utility;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ExtensionConfiguration
 {
 	/**
@@ -18,7 +19,7 @@ class ExtensionConfiguration
 	 */
 	public function get($extKey, $configKey)
 	{
-		$extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extKey]);
+		$extensionConfiguration = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get($extKey);
 		return $extensionConfiguration[$configKey];
 	}
 }

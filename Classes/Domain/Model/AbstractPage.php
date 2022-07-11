@@ -15,12 +15,12 @@ abstract class AbstractPage extends AbstractEntity
 {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Belsignum\Booster\Domain\Model\Content>
+	 * @var ObjectStorage<Content>
 	 */
 	protected $faqs;
 
 	/**
-	 * @var \Belsignum\Booster\Domain\Model\Content
+	 * @var Content
 	 */
 	protected $product;
 
@@ -30,7 +30,7 @@ abstract class AbstractPage extends AbstractEntity
 	}
 
 	/**
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Belsignum\Booster\Domain\Model\Content>
+	 * @return ObjectStorage<Content>
 	 */
 	public function getFaqs(): ObjectStorage
 	{
@@ -38,7 +38,7 @@ abstract class AbstractPage extends AbstractEntity
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Belsignum\Booster\Domain\Model\Content> $faqs
+	 * @param ObjectStorage<Content> $faqs
 	 */
 	public function setFaqs(ObjectStorage $faqs
 	): void {
@@ -46,17 +46,17 @@ abstract class AbstractPage extends AbstractEntity
 	}
 
 	/**
-	 * @return \Belsignum\Booster\Domain\Model\Content|null
+	 * @return Content|null
 	 */
-	public function getProduct(): ?\Belsignum\Booster\Domain\Model\Content
+	public function getProduct(): ?Content
 	{
 		return $this->product;
 	}
 
 	/**
-	 * @param \Belsignum\Booster\Domain\Model\Content $product
+	 * @param Content $product
 	 */
-	public function setProduct(\Belsignum\Booster\Domain\Model\Content $product
+	public function setProduct(Content $product
 	): void {
 		$this->product = $product;
 	}

@@ -3,7 +3,6 @@
 namespace Belsignum\Booster\Userfuncs;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 class ContentTca
 {

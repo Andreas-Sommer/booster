@@ -8,6 +8,9 @@
 
 namespace Belsignum\Booster\Domain\Model;
 
+use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use Belsignum\Booster\Constants;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
@@ -32,8 +35,8 @@ class Content extends AbstractEntity
 	/**
 	 * images
 	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference>
-	 * @cascade remove
+	 * @var ObjectStorage<FileReference>
+	 * @Extbase\ORM\Cascade("remove")
 	 */
 	protected $images = null;
 
@@ -113,8 +116,8 @@ class Content extends AbstractEntity
 	protected $brand;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Belsignum\Booster\Domain\Model\Content>
-	 * @cascade remove
+	 * @var ObjectStorage<\Belsignum\Booster\Domain\Model\Content>
+	 * @Extbase\ORM\Cascade("remove")
 	 */
 	protected $offers;
 
@@ -149,8 +152,8 @@ class Content extends AbstractEntity
 	}
 
 	protected function initStorageObjects() {
-		$this->offers = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		$this->images = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->offers = new ObjectStorage();
+		$this->images = new ObjectStorage();
 	}
 
 	/**
@@ -442,17 +445,17 @@ class Content extends AbstractEntity
 	}
 
 	/**
-	 * @return null|\TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Belsignum\Booster\Domain\Model\Content>
+	 * @return null|ObjectStorage<\Belsignum\Booster\Domain\Model\Content>
 	 */
-	public function getOffers(): ?\TYPO3\CMS\Extbase\Persistence\ObjectStorage
+	public function getOffers(): ?ObjectStorage
 	{
 		return $this->offers;
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Belsignum\Booster\Domain\Model\Content> $offers
+	 * @param ObjectStorage<\Belsignum\Booster\Domain\Model\Content> $offers
 	 */
-	public function setOffers(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $offers
+	public function setOffers(ObjectStorage $offers
 	): void {
 		$this->offers = $offers;
 	}
@@ -478,9 +481,9 @@ class Content extends AbstractEntity
 	/**
 	 * Returns the images
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference> $images
+	 * @return ObjectStorage<FileReference> $images
 	 */
-	public function getImages(): \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+	public function getImages(): ObjectStorage
 	{
 		return $this->images;
 	}
@@ -488,11 +491,11 @@ class Content extends AbstractEntity
 	/**
 	 * Sets the images
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference> $images
+	 * @param ObjectStorage<FileReference> $images
 	 * @return void
 	 */
 	public function setImages(
-		\TYPO3\CMS\Extbase\Persistence\ObjectStorage $images
+		ObjectStorage $images
 	): void {
 		$this->images = $images;
 	}

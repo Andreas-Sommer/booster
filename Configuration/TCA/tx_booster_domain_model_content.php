@@ -1,5 +1,6 @@
 <?php
 
+use Belsignum\Booster\Userfuncs\ContentTca;
 use Belsignum\Booster\Constants;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Resource\File;
@@ -21,13 +22,13 @@ return [
 	'ctrl' => [
 		'title' => $ll . ':tx_booster_domain_model_content',
 		'label' => 'name',
-		'formattedLabel_userFunc' => \Belsignum\Booster\Userfuncs\ContentTca::class . '->dynamicTitleByType',
+		'formattedLabel_userFunc' => ContentTca::class . '->dynamicTitleByType',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
 		'languageField' => 'sys_language_uid',
 		'transOrigPointerField' => 'l18n_parent',
 		'transOrigDiffSourceField'  => 'l18n_diffsource',
-		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xlf:LGL.prependAtCopy',
+		'prependAtCopy' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.prependAtCopy',
 		'copyAfterDuplFields' => 'sys_language_uid',
 		'useColumnsForDefaultValues' => 'sys_language_uid',
 		'delete' => 'deleted',
@@ -36,9 +37,6 @@ return [
 		],
 		'iconfile' => 'EXT:booster/Resources/Public/Icons/default_data.svg'
 	],
-	'interface' => [
-		'showRecordFieldList' => 'hidden, name, text, gtin, product_id, nsn, mpn, sku, brand'
-	],
 	'types' => $types,
 	'palettes' => [
 		'numbers' => ['showitem' => 'sku, product_id, mpn']
@@ -46,14 +44,14 @@ return [
 	'columns' => [
 		'sys_language_uid' => [
 			'exclude' => true,
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.language',
+			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
 			'config' => [
 				'type' => 'select',
 				'renderType' => 'selectSingle',
 				'special' => 'languages',
 				'items' => [
 					[
-						'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages',
+						'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages',
 						-1,
 						'flags-multiple'
 					],
@@ -62,9 +60,8 @@ return [
 			]
 		],
 		'l18n_parent' => [
-			'exclude' => true,
 			'displayCond' => 'FIELD:sys_language_uid:>:0',
-			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
+			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
 			'config' => [
 				'type' => 'select',
 				'renderType' => 'selectSingle',
@@ -86,7 +83,7 @@ return [
 		],
 		'hidden' => [
 			'exclude' => 1,
-			'label'   => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
+			'label'   => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
 			'config'  => [
 				'type' => 'check'
 			]
@@ -122,12 +119,12 @@ return [
 			]
 		],
 		'images' => [
-			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.images',
+			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.images',
 			'config' => ExtensionManagementUtility::getFileFieldTCAConfig(
 				'booster_product_image',
 				[
 					'appearance' => [
-						'createNewRelationLinkTitle' => 'LLL:EXT:cms/locallang_ttc.xlf:images.addFileReference'
+						'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference'
 					],
 					// custom configuration for displaying fields in the overlay/reference table
 					// to use the image overlay palette instead of the basic overlay palette
@@ -135,32 +132,32 @@ return [
 						'types' => [
 							'0' => [
 								'showitem' => '
-                            --palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+                            --palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
                             --palette--;;filePalette'
 							],
 							File::FILETYPE_TEXT => [
 								'showitem' => '
-                                --palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+                                --palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
                                 --palette--;;filePalette'
 							],
 							File::FILETYPE_IMAGE => [
 								'showitem' => '
-                                --palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+                                --palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
                                 --palette--;;filePalette'
 							],
 							File::FILETYPE_AUDIO => [
 								'showitem' => '
-                                --palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.audioOverlayPalette;audioOverlayPalette,
+                                --palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.audioOverlayPalette;audioOverlayPalette,
                                 --palette--;;filePalette'
 							],
 							File::FILETYPE_VIDEO => [
 								'showitem' => '
-                                --palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.videoOverlayPalette;videoOverlayPalette,
+                                --palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.videoOverlayPalette;videoOverlayPalette,
                                 --palette--;;filePalette'
 							],
 							File::FILETYPE_APPLICATION => [
 								'showitem' => '
-                                --palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+                                --palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
                                 --palette--;;filePalette'
 							],
 						],

@@ -8,10 +8,11 @@
 
 namespace Belsignum\Booster\Hook\PageRenderer;
 
+use Belsignum\Booster\Domain\Repository\ContentRepository;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
+use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use Belsignum\Booster\Constants;
 use Belsignum\Booster\Domain\Model\Content;
-use Belsignum\Booster\Domain\Model\Page;
-use Belsignum\Booster\Domain\Repository\PageRepository;
 use Brotkrueml\Schema\Model\Type\AggregateOffer;
 use Brotkrueml\Schema\Model\Type\AggregateRating;
 use Brotkrueml\Schema\Model\Type\Brand;
@@ -25,6 +26,7 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use Brotkrueml\Schema\Model\Type\Answer;
 use Brotkrueml\Schema\Model\Type\FAQPage;
 use Brotkrueml\Schema\Model\Type\Question;
+use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -40,10 +42,10 @@ class PreProcessHook
 	/** @var ObjectManager */
 	protected $objectManager;
 
-	/** @var PageRepository */
-	protected $pageRepository;
+	/** @var ContentRepository */
+	protected $contentRepository;
 
-	/** @var \TYPO3\CMS\Extbase\Service\ImageService */
+	/** @var ImageService */
 	protected $imageService;
 
 	/**
@@ -60,7 +62,7 @@ class PreProcessHook
 		$this->schemaManager = $schemaManager
 			?: GeneralUtility::makeInstance(SchemaManager::class);
 		$this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-		$this->pageRepository = $this->objectManager->get(PageRepository::class);
+		$this->contentRepository = $this->objectManager->get(ContentRepository::class);
 		$this->imageService = $this->objectManager->get(ImageService::class);
 	}
 	public function execute(?array &$params, PageRenderer $pageRenderer): void
@@ -69,16 +71,17 @@ class PreProcessHook
 			return;
 		}
 
-		$page = $this->pageRepository->findByUid($this->controller->id);
+		$faqs = $this->contentRepository->getFaqsByPid($this->controller->id);
+
 		if(
-			$page instanceof Page
-		   	&& $page->getFaqs()->count()
+			$faqs instanceof QueryResult
+		   	&& $faqs->count()
 		)
 		{
 			$faqPage = new FAQPage();
 
-			/** @var \Belsignum\Booster\Domain\Model\Content $faq */
-			foreach ($page->getFaqs() as $_ => $faq)
+			/** @var Content $faq */
+			foreach ($faqs as $_ => $faq)
 			{
 				$answer = new Answer();
 				$answer->setProperty('text', $faq->getText());
@@ -92,35 +95,36 @@ class PreProcessHook
 
 			$this->schemaManager->addType($faqPage);
 		}
-		if(
-			$page instanceof Page
-			&& $page->getProduct() instanceof Content
-		)
+
+		/** @var Content $pageProduct */
+		$pageProduct = $this->contentRepository->findByUid($this->controller->page['tx_booster_product']);
+
+		if($pageProduct instanceof Content)
 		{
 			$product = new Product();
-			$product->addProperty('name', $page->getProduct()->getName());
-			$product->addProperty('description', $page->getProduct()->getText());
-			$product->addProperty('slogan', $page->getProduct()->getSlogan());
-			$product->addProperty('color', $page->getProduct()->getCondition());
-			$product->addProperty('award', $page->getProduct()->getAward());
-			$product->addProperty('sku', $page->getProduct()->getSku());
-			$product->addProperty('mpn', $page->getProduct()->getMpn());
-			$product->addProperty('productID', $page->getProduct()->getProductId());
-			if($brand = $page->getProduct()->getBrand())
+			$product->addProperty('name', $pageProduct->getName());
+			$product->addProperty('description', $pageProduct->getText());
+			$product->addProperty('slogan', $pageProduct->getSlogan());
+			$product->addProperty('color', $pageProduct->getCondition());
+			$product->addProperty('award', $pageProduct->getAward());
+			$product->addProperty('sku', $pageProduct->getSku());
+			$product->addProperty('mpn', $pageProduct->getMpn());
+			$product->addProperty('productID', $pageProduct->getProductId());
+			if($brand = $pageProduct->getBrand())
 			{
 				$brandObj = new Brand();
 				$brandObj->addProperty('name', $brand->getName());
 				$product->addProperty('brand', $brandObj);
 			}
 
-			if($images = $page->getProduct()->getImages())
+			if($images = $pageProduct->getImages())
 			{
 				$imageCollection = [];
-				/** @var \TYPO3\CMS\Extbase\Domain\Model\FileReference $image */
+				/** @var FileReference $image */
 				foreach ($images as $_ => $image)
 				{
 					$img = $image->getOriginalResource();
-					$cropVariantCollection = \TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection::create((string)$img->getProperty('crop'));
+					$cropVariantCollection = CropVariantCollection::create((string)$img->getProperty('crop'));
 					$cropArea = $cropVariantCollection->getCropArea();
 					$processingInstructions = array(
 						'crop' => $cropArea->makeAbsoluteBasedOnFile($img),
@@ -132,7 +136,7 @@ class PreProcessHook
 				$product->addProperty('image', $imageCollection);
 			}
 
-			if(($offers = $page->getProduct()->getOffers()) instanceof ObjectStorage)
+			if(($offers = $pageProduct->getOffers()) instanceof ObjectStorage)
 			{
 				/**
 				 * @var Content $offer
@@ -169,14 +173,14 @@ class PreProcessHook
 				}
 			}
 
-			if($aggregateRating = $page->getProduct()->getAggregateRating())
+			if($aggregateRating = $pageProduct->getAggregateRating())
 			{
 				$aggregateRatingObj = new AggregateRating();
 				$aggregateRatingObj->addProperty('ratingValue', $aggregateRating->getDoubleValue());
 				$aggregateRatingObj->addProperty('reviewCount', $aggregateRating->getCount());
 				$product->addProperty('aggregateRating', $aggregateRatingObj);
 			}
-			if($review = $page->getProduct()->getReview())
+			if($review = $pageProduct->getReview())
 			{
 				$reviewObj = new Review();
 				if($reviewRating = $review->getReviewRating())
