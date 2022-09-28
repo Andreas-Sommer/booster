@@ -24,12 +24,11 @@ return [
 		'formattedLabel_userFunc' => \Belsignum\Booster\Userfuncs\ContentTca::class . '->dynamicTitleByType',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
+        'versioningWS' => true,
 		'languageField' => 'sys_language_uid',
 		'transOrigPointerField' => 'l18n_parent',
 		'transOrigDiffSourceField'  => 'l18n_diffsource',
 		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xlf:LGL.prependAtCopy',
-		'copyAfterDuplFields' => 'sys_language_uid',
-		'useColumnsForDefaultValues' => 'sys_language_uid',
 		'delete' => 'deleted',
 		'enablecolumns' => [
 			'disabled' => 'hidden'
@@ -84,6 +83,14 @@ return [
 				'type' => 'passthrough'
 			]
 		],
+        't3ver_label' => [
+            'displayCond' => 'FIELD:t3ver_label:REQ:true',
+            'label' => 'LLL:EXT:lang/locallang_general.php:LGL.versionLabel',
+            'config' => [
+                'type'=>'none',
+                'cols' => 27
+            ],
+        ],
 		'hidden' => [
 			'exclude' => 1,
 			'label'   => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
