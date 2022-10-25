@@ -148,12 +148,13 @@ class Content extends AbstractEntity
 
 	public function __construct()
 	{
-		$this->initStorageObjects();
+		$this->initializeObject();
 	}
 
-	protected function initStorageObjects() {
-		$this->offers = new ObjectStorage();
-		$this->images = new ObjectStorage();
+	public function initializeObject(): void
+    {
+		$this->setOffers(new ObjectStorage);
+		$this->setImages(new ObjectStorage);
 	}
 
 	/**
