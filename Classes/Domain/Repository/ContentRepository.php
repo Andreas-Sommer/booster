@@ -11,7 +11,6 @@ namespace Belsignum\Booster\Domain\Repository;
 use Belsignum\Booster\Domain\Model\Content;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
