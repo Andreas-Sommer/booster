@@ -2,7 +2,6 @@
   "name": "belsignum/booster",
   "type": "typo3-cms-extension",
   "description": "Schema.org structured data for Typo3 and Google APIs",
-  "version": "10.0.0",
   "license": "GPL-2.0-or-later",
   "authors": [
     {
@@ -23,7 +22,7 @@
   "require": {
     "ext-json": "*",
     "typo3/cms-core": "^10.4",
-    "brotkrueml/schema": "^2.6.4"
+    "brotkrueml/schema": "^2.7.1"
   },
   "autoload": {
     "psr-4": {
