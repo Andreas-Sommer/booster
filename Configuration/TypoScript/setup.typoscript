@@ -1,0 +1,23 @@
+plugin.tx_booster_faq {
+    view {
+        templateRootPaths {
+            0 = EXT:booster/Resources/Private/Templates/
+            1 = {$plugin.tx_booster.view.templateRootPath}
+        }
+        partialRootPaths {
+            0 = EXT:booster/Resources/Private/Partials/
+            1 = {$plugin.tx_booster.view.partialRootPath}
+        }
+        layoutRootPaths {
+            0 = EXT:booster/Resources/Private/Layouts/
+            1 = {$plugin.tx_booster.view.layoutRootPath}
+        }
+    }
+    settings {
+        use_encore_resources = 1
+        encore_resources {
+            script = bootstrap
+            css = accordion
+        }
+    }
+}

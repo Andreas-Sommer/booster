@@ -1,0 +1,7 @@
+plugin.tx_booster {
+    view {
+        templateRootPath = EXT:booster/Resources/Private/Templates/
+        partialRootPath = EXT:booster/Resources/Private/Partials/
+        layoutRootPath = EXT:booster/Resources/Private/Layouts/
+    }
+}
