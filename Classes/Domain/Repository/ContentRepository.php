@@ -9,6 +9,7 @@
 namespace Belsignum\Booster\Domain\Repository;
 
 use Belsignum\Booster\Domain\Model\Content;
+use Doctrine\DBAL\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
@@ -33,7 +34,8 @@ class ContentRepository extends Repository
 	public function findInUids(array $uids): QueryResult
 	{
 		$query = $this->createQuery();
-		$query->getQuerySettings()->setRespectStoragePage(false);
+		$query->getQuerySettings()
+            ->setRespectStoragePage(false);
 		$query->matching(
 			$query->in('uid', $uids)
 		);
@@ -44,20 +46,22 @@ class ContentRepository extends Repository
 
 	/**
 	 * @param int $pid
-	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult
-	 * @throws \Doctrine\DBAL\Driver\Exception
-	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
-	 */
-	public function getFaqsByPid(int $pid): ?QueryResult
+     */
+	public function getFaqsByPid(int $pid)
 	{
 		$uids = $this->getFaqUids($pid);
-		if(!empty($uids))
-		{
-			return $this->findInUids($uids);
-		}
-		return null;
-
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tx_booster_domain_model_content');
+        return $queryBuilder->select('*')
+            ->from('tx_booster_domain_model_content')
+            ->where(
+                $queryBuilder->expr()->in(
+                    'uid',
+                    $queryBuilder->createNamedParameter($uids, Connection::PARAM_INT_ARRAY)
+                )
+            )
+            ->execute()
+            ->fetchAllAssociative();
 	}
 
 	/**
@@ -71,18 +75,18 @@ class ContentRepository extends Repository
 		$queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
 									  ->getQueryBuilderForTable('tx_booster_pages_content_mm');
 		return $queryBuilder->select('uid_foreign')
-							->from('tx_booster_pages_content_mm')
-							->where(
-								$queryBuilder->expr()->eq(
-									'uid_local',
-									$queryBuilder->createNamedParameter($local_uid, \PDO::PARAM_INT)
-								),
-								$queryBuilder->expr()->eq(
-									'fieldname',
-									$queryBuilder->createNamedParameter('tx_booster_faq', \PDO::PARAM_STR)
-								),
-							)
-							->execute()
-							->fetchFirstColumn();
+            ->from('tx_booster_pages_content_mm')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'uid_local',
+                    $queryBuilder->createNamedParameter($local_uid, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'fieldname',
+                    $queryBuilder->createNamedParameter('tx_booster_faq', \PDO::PARAM_STR)
+                ),
+            )
+            ->execute()
+            ->fetchFirstColumn();
 	}
 }

@@ -22,6 +22,10 @@ class FaqController extends ActionController
     {
         $cObj = $this->typoScriptFrontendController->cObj;
         $pid = $this->typoScriptFrontendController->id;
+        if ($this->typoScriptFrontendController->getLanguage()->getLanguageId() > 0)
+        {
+            $pid = $this->typoScriptFrontendController->page['_PAGES_OVERLAY_UID'] ?? $pid;
+        }
         $faqs = $this->contentRepository->getFaqsByPid($pid);
         $this->view->assignMultiple([
             'faqs' => $faqs,
