@@ -13,51 +13,52 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 abstract class AbstractPage extends AbstractEntity
 {
+    /**
+     * @var ObjectStorage<Content>
+     */
+    protected $faqs;
 
-	/**
-	 * @var ObjectStorage<Content>
-	 */
-	protected $faqs;
+    /**
+     * @var Content
+     */
+    protected $product;
 
-	/**
-	 * @var Content
-	 */
-	protected $product;
+    public function __construct()
+    {
+        $this->faqs = new ObjectStorage();
+    }
 
-	public function __construct()
-	{
-		$this->faqs = new ObjectStorage();
-	}
+    /**
+     * @return ObjectStorage<Content>
+     */
+    public function getFaqs(): ObjectStorage
+    {
+        return $this->faqs;
+    }
 
-	/**
-	 * @return ObjectStorage<Content>
-	 */
-	public function getFaqs(): ObjectStorage
-	{
-		return $this->faqs;
-	}
+    /**
+     * @param ObjectStorage<Content> $faqs
+     */
+    public function setFaqs(
+        ObjectStorage $faqs
+    ): void {
+        $this->faqs = $faqs;
+    }
 
-	/**
-	 * @param ObjectStorage<Content> $faqs
-	 */
-	public function setFaqs(ObjectStorage $faqs
-	): void {
-		$this->faqs = $faqs;
-	}
+    /**
+     * @return Content|null
+     */
+    public function getProduct(): ?Content
+    {
+        return $this->product;
+    }
 
-	/**
-	 * @return Content|null
-	 */
-	public function getProduct(): ?Content
-	{
-		return $this->product;
-	}
-
-	/**
-	 * @param Content $product
-	 */
-	public function setProduct(Content $product
-	): void {
-		$this->product = $product;
-	}
+    /**
+     * @param Content $product
+     */
+    public function setProduct(
+        Content $product
+    ): void {
+        $this->product = $product;
+    }
 }

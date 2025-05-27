@@ -17,39 +17,37 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 
 class ContentRepository extends Repository
 {
-	public function findByUid($uid): ?Content
-	{
-		$querySettings = $this->createQuery()->getQuerySettings();
-		$querySettings->setRespectStoragePage(false);
-		$this->setDefaultQuerySettings($querySettings);
-		return parent::findByUid($uid);
-	}
+    public function findByUid($uid): ?Content
+    {
+        $querySettings = $this->createQuery()->getQuerySettings();
+        $querySettings->setRespectStoragePage(false);
+        $this->setDefaultQuerySettings($querySettings);
+        return parent::findByUid($uid);
+    }
 
-	/**
-	 * @param array $uids
-	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult
-	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
-	 */
-	public function findInUids(array $uids): QueryResult
-	{
-		$query = $this->createQuery();
-		$query->getQuerySettings()
-            ->setRespectStoragePage(false);
-		$query->matching(
-			$query->in('uid', $uids)
-		);
-		return $query->execute();
-	}
-
-
-
-	/**
-	 * @param int $pid
+    /**
+     * @param array $uids
+     *
+     * @return \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
      */
-	public function getFaqsByPid(int $pid)
-	{
-		$uids = $this->getFaqUids($pid);
+    public function findInUids(array $uids): QueryResult
+    {
+        $query = $this->createQuery();
+        $query->getQuerySettings()
+            ->setRespectStoragePage(false);
+        $query->matching(
+            $query->in('uid', $uids)
+        );
+        return $query->execute();
+    }
+
+    /**
+     * @param int $pid
+     */
+    public function getFaqsByPid(int $pid)
+    {
+        $uids = $this->getFaqUids($pid);
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('tx_booster_domain_model_content');
         return $queryBuilder->select('*')
@@ -62,19 +60,19 @@ class ContentRepository extends Repository
             )
             ->execute()
             ->fetchAllAssociative();
-	}
+    }
 
-	/**
-	 * @param int $local_uid
-	 *
-	 * @return array
-	 * @throws \Doctrine\DBAL\Driver\Exception
-	 */
-	public function getFaqUids(int $local_uid): array
-	{
-		$queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-									  ->getQueryBuilderForTable('tx_booster_pages_content_mm');
-		return $queryBuilder->select('uid_foreign')
+    /**
+     * @param int $local_uid
+     *
+     * @return array
+     * @throws \Doctrine\DBAL\Driver\Exception
+     */
+    public function getFaqUids(int $local_uid): array
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+        							  ->getQueryBuilderForTable('tx_booster_pages_content_mm');
+        return $queryBuilder->select('uid_foreign')
             ->from('tx_booster_pages_content_mm')
             ->where(
                 $queryBuilder->expr()->eq(
@@ -88,5 +86,5 @@ class ContentRepository extends Repository
             )
             ->execute()
             ->fetchFirstColumn();
-	}
+    }
 }

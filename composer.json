@@ -21,8 +21,8 @@
   ],
   "require": {
     "ext-json": "*",
-    "typo3/cms-core": "^10.4",
-    "brotkrueml/schema": "^2.7.1"
+    "typo3/cms-core": "^12.4",
+    "brotkrueml/schema": "^v3.13.0"
   },
   "autoload": {
     "psr-4": {

@@ -11,15 +11,15 @@ namespace Belsignum\Booster\Utility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ExtensionConfiguration
 {
-	/**
-	 * @param $extKey
-	 * @param $configKey
-	 *
-	 * @return mixed
-	 */
-	public function get($extKey, $configKey)
-	{
-		$extensionConfiguration = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get($extKey);
-		return $extensionConfiguration[$configKey];
-	}
+    /**
+     * @param $extKey
+     * @param $configKey
+     *
+     * @return mixed
+     */
+    public function get($extKey, $configKey)
+    {
+        $extensionConfiguration = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get($extKey);
+        return $extensionConfiguration[$configKey];
+    }
 }
