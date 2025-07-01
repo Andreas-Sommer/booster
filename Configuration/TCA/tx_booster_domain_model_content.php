@@ -45,19 +45,7 @@ return [
 		'sys_language_uid' => [
 			'exclude' => true,
 			'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
-			'config' => [
-				'type' => 'select',
-				'renderType' => 'selectSingle',
-				'special' => 'languages',
-				'items' => [
-					[
-						'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages',
-						-1,
-						'flags-multiple'
-					],
-				],
-				'default' => 0,
-			]
+			'config' => ['type' => 'language']
 		],
 		'l18n_parent' => [
 			'displayCond' => 'FIELD:sys_language_uid:>:0',
@@ -66,10 +54,7 @@ return [
 				'type' => 'select',
 				'renderType' => 'selectSingle',
 				'items' => [
-					[
-						'',
-						0
-					]
+					['label' => '', 'value' => 0]
 				],
 				'foreign_table' => 'tt_content',
 				'foreign_table_where' => 'AND tt_content.pid=###CURRENT_PID### AND tt_content.sys_language_uid IN (-1,0)',
@@ -94,8 +79,9 @@ return [
 			'config'  => [
 				'type' => 'input',
 				'size' => 20,
-				'eval' => 'trim,required',
-				'max'  => 256
+				'eval' => 'trim',
+				'max'  => 256,
+                'required' => true
 			]
 		],
 		'text' => [
@@ -105,17 +91,16 @@ return [
 				'type' => 'text',
 				'cols' => '40',
 				'rows' => '5',
-				'eval' => 'trim,required',
+				'eval' => 'trim',
 				'enableRichtext' => true,
+                'required' => true,
 			]
 		],
 		'date' => [
 			'exclude' => 0,
 			'label'   => $ll . ':tx_booster_domain_model_content.date',
 			'config'  => [
-				'type' => 'input',
-				'renderType' => 'inputDateTime',
-				'eval' => 'datetime',
+				'type' => 'datetime',
 			]
 		],
 		'images' => [
@@ -275,7 +260,7 @@ return [
 				'renderType' => 'selectSingle',
 				'maxItems' => 1,
 				'items' => [
-					['', ''],
+					['label' => '', 'value' => ''],
 				]
 			]
 		],
@@ -347,16 +332,16 @@ return [
 								'type' => 'select',
 								'renderType' => 'selectSingle',
 								'items' => [
-									['', ''],
-									['Discontinued', 'Discontinued'],
-									['InStock', 'InStock'],
-									['InStoreOnly', 'InStoreOnly'],
-									['LimitedAvailability', 'LimitedAvailability'],
-									['OnlineOnly', 'OnlineOnly'],
-									['OutOfStock', 'OutOfStock'],
-									['PreOrder', 'PreOrder'],
-									['PreSale', 'PreSale'],
-									['SoldOut', 'SoldOut'],
+									['label' => '', 'value' => ''],
+									['label' => 'Discontinued', 'value' => 'Discontinued'],
+									['label' => 'InStock', 'value' => 'InStock'],
+									['label' => 'InStoreOnly', 'value' => 'InStoreOnly'],
+									['label' => 'LimitedAvailability', 'value' => 'LimitedAvailability'],
+									['label' => 'OnlineOnly', 'value' => 'OnlineOnly'],
+									['label' => 'OutOfStock', 'value' => 'OutOfStock'],
+									['label' => 'PreOrder', 'value' => 'PreOrder'],
+									['label' => 'PreSale', 'value' => 'PreSale'],
+									['label' => 'SoldOut', 'value' => 'SoldOut'],
 								]
 							]
 						],
@@ -367,11 +352,11 @@ return [
 								'renderType' => 'selectSingle',
 								'size' => 1,
 								'items' => [
-									['', ''],
-									['DamagedCondition', 'DamagedCondition'],
-									['NewCondition', 'NewCondition'],
-									['RefurbishedCondition', 'RefurbishedCondition'],
-									['UsedCondition', 'UsedCondition'],
+									['label' => '', 'value' => ''],
+									['label' => 'DamagedCondition', 'value' => 'DamagedCondition'],
+									['label' => 'NewCondition', 'value' => 'NewCondition'],
+									['label' => 'RefurbishedCondition', 'value' => 'RefurbishedCondition'],
+									['label' => 'UsedCondition', 'value' => 'UsedCondition'],
 								]
 							]
 						],
@@ -450,30 +435,30 @@ return [
 			'exclude' => 0,
 			'label'   => $ll . ':tx_booster_domain_model_content.price',
 			'config'  => [
-				'type' => 'input',
+				'type' => 'number',
 				'size' => 10,
-				'eval' => 'double2',
-				'max'  => 10
+				'max'  => 10,
+                'format' => 'decimal'
 			]
 		],
 		'double_value' => [
 			'exclude' => 0,
 			'label'   => $ll . ':tx_booster_domain_model_content.double_value',
 			'config'  => [
-				'type' => 'input',
+				'type' => 'number',
 				'size' => 10,
-				'eval' => 'double2',
-				'max'  => 10
+				'max'  => 10,
+                'format' => 'decimal'
 			]
 		],
 		'count' => [
 			'exclude' => 0,
 			'label'   => $ll . ':tx_booster_domain_model_content.count',
 			'config'  => [
-				'type' => 'input',
+				'type' => 'number',
 				'size' => 10,
-				'eval' => 'double2',
-				'max'  => 10
+				'max'  => 10,
+                'format' => 'decimal'
 			]
 		],
 		'review' => [

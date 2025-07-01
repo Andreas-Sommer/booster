@@ -10,6 +10,7 @@ namespace Belsignum\Booster\Hook\PageRenderer;
 
 use Belsignum\Booster\Domain\Repository\ContentRepository;
 use Brotkrueml\Schema\Type\TypeFactory;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use Belsignum\Booster\Constants;
@@ -17,17 +18,11 @@ use Belsignum\Booster\Domain\Model\Content;
 use Brotkrueml\Schema\Model\Type\AggregateOffer;
 use Brotkrueml\Schema\Model\Type\AggregateRating;
 use Brotkrueml\Schema\Model\Type\Brand;
-use Brotkrueml\Schema\Model\Type\Offer;
 use Brotkrueml\Schema\Model\Type\Organization;
 use Brotkrueml\Schema\Model\Type\Person;
 use Brotkrueml\Schema\Model\Type\Product;
 use Brotkrueml\Schema\Model\Type\Rating;
 use Brotkrueml\Schema\Model\Type\Review;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use Brotkrueml\Schema\Model\Type\Answer;
-use Brotkrueml\Schema\Model\Type\FAQPage;
-use Brotkrueml\Schema\Model\Type\Question;
-use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -37,35 +32,27 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 
 class PreProcessHook
 {
-    /** @var TypoScriptFrontendController */
-    protected $controller;
-
-    /** @var ObjectManager */
-    protected $objectManager;
-
-    /** @var ContentRepository */
-    protected $contentRepository;
-
-    /** @var ImageService */
-    protected $imageService;
-
-    /**
-     * @var SchemaManager
-     */
-    protected $schemaManager;
+    protected ?TypoScriptFrontendController $controller;
+    protected ContentRepository $contentRepository;
+    protected ImageService $imageService;
+    protected SchemaManager $schemaManager;
 
     public function __construct()
     {
-        $this->controller = $GLOBALS['TSFE'];
+        $this->controller = $GLOBALS['TSFE'] ?? null;
+        if ($this->controller === null)
+        {
+            // missing frontendController indicates Backend mode
+            return;
+        }
         $this->schemaManager = GeneralUtility::makeInstance(SchemaManager::class);
-        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->contentRepository = $this->objectManager->get(ContentRepository::class);
-        $this->imageService = $this->objectManager->get(ImageService::class);
+        $this->contentRepository = GeneralUtility::makeInstance(ContentRepository::class);
+        $this->imageService = GeneralUtility::makeInstance(ImageService::class);
     }
 
     public function execute(?array &$params, PageRenderer $pageRenderer): void
     {
-        if (TYPO3_MODE !== 'FE' || $this->controller->page['no_index'] > 0)
+        if ($this->controller === null || ApplicationType::fromRequest($this->controller->cObj->getRequest())->isFrontend() === false || $this->controller->page['no_index'] > 0)
         {
             return;
         }
@@ -128,9 +115,7 @@ class PreProcessHook
                     $img = $image->getOriginalResource();
                     $cropVariantCollection = CropVariantCollection::create((string)$img->getProperty('crop'));
                     $cropArea = $cropVariantCollection->getCropArea();
-                    $processingInstructions = array(
-                        'crop' => $cropArea->makeAbsoluteBasedOnFile($img),
-                    );
+                    $processingInstructions = ['crop' => $cropArea->makeAbsoluteBasedOnFile($img)];
                     $processedImage = $this->imageService->applyProcessingInstructions($img, $processingInstructions);
                     $imageUri = $this->imageService->getImageUri($processedImage, TRUE);
                     $imageCollection[] = $imageUri;

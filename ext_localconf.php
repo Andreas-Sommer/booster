@@ -1,17 +1,23 @@
 <?php
-defined('TYPO3_MODE') || die('Access denied.');
+
+use Belsignum\Booster\Controller\FaqController;
+use Belsignum\Booster\Hook\PageRenderer\PreProcessHook;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
+
+defined('TYPO3') || die('Access denied.');
 
 (function () {
-    if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('schema'))
+    if (ExtensionManagementUtility::isLoaded('schema'))
     {
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'][] = \Belsignum\Booster\Hook\PageRenderer\PreProcessHook::class . '->execute';
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'][] = PreProcessHook::class . '->execute';
     }
 
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+    ExtensionUtility::configurePlugin(
         'booster',
         'faq',
         [
-            \Belsignum\Booster\Controller\FaqController::class => 'list',
+            FaqController::class => 'list',
         ]
     );
 })();

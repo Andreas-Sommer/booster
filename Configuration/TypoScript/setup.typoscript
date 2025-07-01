@@ -14,10 +14,5 @@ plugin.tx_booster_faq {
         }
     }
     settings {
-        use_encore_resources = 1
-        encore_resources {
-            script = bootstrap
-            css = accordion
-        }
     }
 }

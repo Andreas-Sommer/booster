@@ -2,10 +2,6 @@
 
 <f:layout name="default" />
 <f:section name="content">
-    <f:if condition="{settings.use_encore_resources}">
-        <encore:renderWebpackLinkTags entryName="{settings.encore_resources.css}"/>
-        <encore:renderWebpackScriptTags entryName="{settings.encore_resources.script}"/>
-    </f:if>
     <div class="accordion" id="boosterAccordion-{data.uid}">
         <f:if condition="{faqs}">
             <f:for each="{faqs}" as="faq" iteration="i">

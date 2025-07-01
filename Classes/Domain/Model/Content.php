@@ -8,6 +8,7 @@
 
 namespace Belsignum\Booster\Domain\Model;
 
+use DateTime;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
@@ -27,7 +28,7 @@ class Content extends AbstractEntity
     protected $text;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     protected $date;
 
@@ -110,38 +111,38 @@ class Content extends AbstractEntity
     protected $count;
 
     /**
-     * @var \Belsignum\Booster\Domain\Model\Content
+     * @var Content
      */
     protected $brand;
 
     /**
-     * @var ObjectStorage<\Belsignum\Booster\Domain\Model\Content>
+     * @var ObjectStorage<Content>
      * @Extbase\ORM\Cascade("remove")
      */
     protected $offers;
 
     /**
-     * @var \Belsignum\Booster\Domain\Model\Content
+     * @var Content
      */
     protected $priceValidUntil;
 
     /**
-     * @var \Belsignum\Booster\Domain\Model\Content
+     * @var Content
      */
     protected $aggregateRating;
 
     /**
-     * @var \Belsignum\Booster\Domain\Model\Content
+     * @var Content
      */
     protected $review;
 
     /**
-     * @var \Belsignum\Booster\Domain\Model\Content
+     * @var Content
      */
     protected $reviewRating;
 
     /**
-     * @var \Belsignum\Booster\Domain\Model\Content
+     * @var Content
      */
     protected $author;
 
@@ -189,17 +190,17 @@ class Content extends AbstractEntity
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getDate(): \DateTime
+    public function getDate(): DateTime
     {
         return $this->date;
     }
 
     /**
-     * @param \DateTime $date
+     * @param DateTime $date
      */
-    public function setDate(\DateTime $date): void
+    public function setDate(DateTime $date): void
     {
         $this->date = $date;
     }
@@ -429,24 +430,24 @@ class Content extends AbstractEntity
     }
 
     /**
-     * @return \Belsignum\Booster\Domain\Model\Content|null
+     * @return Content|null
      */
-    public function getBrand(): ?\Belsignum\Booster\Domain\Model\Content
+    public function getBrand(): ?Content
     {
         return $this->brand;
     }
 
     /**
-     * @param \Belsignum\Booster\Domain\Model\Content $brand
+     * @param Content $brand
      */
     public function setBrand(
-        \Belsignum\Booster\Domain\Model\Content $brand
+        Content $brand
     ): void {
         $this->brand = $brand;
     }
 
     /**
-     * @return null|ObjectStorage<\Belsignum\Booster\Domain\Model\Content>
+     * @return null|ObjectStorage<Content>
      */
     public function getOffers(): ?ObjectStorage
     {
@@ -454,7 +455,7 @@ class Content extends AbstractEntity
     }
 
     /**
-     * @param ObjectStorage<\Belsignum\Booster\Domain\Model\Content> $offers
+     * @param ObjectStorage<Content> $offers
      */
     public function setOffers(
         ObjectStorage $offers
@@ -463,18 +464,19 @@ class Content extends AbstractEntity
     }
 
     /**
-     * @return \Belsignum\Booster\Domain\Model\Content|null
+     * @return Content|null
      */
     public function getPriceValidUntil(
-	): ?\Belsignum\Booster\Domain\Model\Content {
+	): ?Content
+    {
         return $this->priceValidUntil;
     }
 
     /**
-     * @param \Belsignum\Booster\Domain\Model\Content $priceValidUntil
+     * @param Content $priceValidUntil
      */
     public function setPriceValidUntil(
-        \Belsignum\Booster\Domain\Model\Content $priceValidUntil
+        Content $priceValidUntil
     ): void {
         $this->priceValidUntil = $priceValidUntil;
     }
@@ -502,69 +504,70 @@ class Content extends AbstractEntity
     }
 
     /**
-     * @return \Belsignum\Booster\Domain\Model\Content|null
+     * @return Content|null
      */
     public function getAggregateRating(
-	): ?\Belsignum\Booster\Domain\Model\Content {
+	): ?Content
+    {
         return $this->aggregateRating;
     }
 
     /**
-     * @param \Belsignum\Booster\Domain\Model\Content $aggregateRating
+     * @param Content $aggregateRating
      */
     public function setAggregateRating(
-        \Belsignum\Booster\Domain\Model\Content $aggregateRating
+        Content $aggregateRating
     ): void {
         $this->aggregateRating = $aggregateRating;
     }
 
     /**
-     * @return \Belsignum\Booster\Domain\Model\Content|null
+     * @return Content|null
      */
-    public function getReview(): ?\Belsignum\Booster\Domain\Model\Content
+    public function getReview(): ?Content
     {
         return $this->review;
     }
 
     /**
-     * @param \Belsignum\Booster\Domain\Model\Content $review
+     * @param Content $review
      */
     public function setReview(
-        \Belsignum\Booster\Domain\Model\Content $review
+        Content $review
     ): void {
         $this->review = $review;
     }
 
     /**
-     * @return \Belsignum\Booster\Domain\Model\Content|null
+     * @return Content|null
      */
-    public function getReviewRating(): ?\Belsignum\Booster\Domain\Model\Content
+    public function getReviewRating(): ?Content
     {
         return $this->reviewRating;
     }
 
     /**
-     * @param \Belsignum\Booster\Domain\Model\Content $reviewRating
+     * @param Content $reviewRating
      */
     public function setReviewRating(
-        \Belsignum\Booster\Domain\Model\Content $reviewRating
+        Content $reviewRating
     ): void {
         $this->reviewRating = $reviewRating;
     }
 
     /**
-     * @return \Belsignum\Booster\Domain\Model\Content|null
+     * @return Content|null
      */
-    public function getAuthor(): ?\Belsignum\Booster\Domain\Model\Content
+    public function getAuthor(): ?Content
     {
         return $this->author;
     }
 
     /**
-     * @param \Belsignum\Booster\Domain\Model\Content $author
+     * @param Content $author
      */
     public function setAuthor(
-        \Belsignum\Booster\Domain\Model\Content $author
+        Content $author
     ): void {
         $this->author = $author;
     }
