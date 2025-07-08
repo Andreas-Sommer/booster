@@ -2,15 +2,16 @@
 
 <f:layout name="default" />
 <f:section name="content">
+    <f:debug>{_all}</f:debug>
     <div class="accordion" id="boosterAccordion-{data.uid}">
         <f:if condition="{faqs}">
             <f:for each="{faqs}" as="faq" iteration="i">
                 <div class="accordion-item">
-                    <h2 class="accordion-header">
+                    <{f:render(section: 'headerType', arguments: '{type: data.header_layout}')} class="accordion-header">
                         <button class="accordion-button{f:if(condition: i.isFirst, else: ' collapsed')}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{data.uid}-{i.index}" aria-expanded="{f:if(condition: i.isFirst, then: 'true', else: 'false')}" aria-controls="collapse-{data.uid}-{i.index}">
                             {faq.name}
                         </button>
-                    </h2>
+                    </{f:render(section: 'headerType', arguments: '{type: data.header_layout}')}>
                     <div id="collapse-{data.uid}-{i.index}" class="accordion-collapse collapse {f:if(condition: i.isFirst, then: ' show')}" data-bs-parent="#boosterAccordion-{data.uid}">
                         <div class="accordion-body">
                             <f:format.html>{faq.text}</f:format.html>
@@ -21,3 +22,14 @@
         </f:if>
     </div>
 </f:section>
+<f:section name="headerType"><f:spaceless>
+    <f:switch expression="{type}">
+        <f:case value="0">h3</f:case>
+        <f:case value="1">h2</f:case>
+        <f:case value="2">h3</f:case>
+        <f:case value="3">h4</f:case>
+        <f:case value="4">h5</f:case>
+        <f:case value="5">h6</f:case>
+        <f:case value="6">h6</f:case>
+    </f:switch>
+</f:spaceless></f:section>
