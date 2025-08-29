@@ -18,7 +18,8 @@ class FaqController extends ActionController
     {
         $typoScriptFrontendController = $this->request->getAttribute('frontend.controller');
         $pid = $typoScriptFrontendController->contentPid;
-        if ($typoScriptFrontendController->getLanguage()->getLanguageId() > 0)
+        $page = $typoScriptFrontendController->page;
+        if ($typoScriptFrontendController->getLanguage()->getLanguageId() > 0 && $page['content_from_pid'] === 0)
         {
             $pid = $typoScriptFrontendController->page['_PAGES_OVERLAY_UID'] ?? $pid;
         }
