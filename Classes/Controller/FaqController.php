@@ -17,7 +17,7 @@ class FaqController extends ActionController
     public function listAction(): ResponseInterface
     {
         $typoScriptFrontendController = $this->request->getAttribute('frontend.controller');
-        $pid = $typoScriptFrontendController->id;
+        $pid = $typoScriptFrontendController->contentPid;
         if ($typoScriptFrontendController->getLanguage()->getLanguageId() > 0)
         {
             $pid = $typoScriptFrontendController->page['_PAGES_OVERLAY_UID'] ?? $pid;
