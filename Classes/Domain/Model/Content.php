@@ -165,9 +165,6 @@ class Content extends AbstractEntity
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
     public function setName(string $name): void
     {
         $this->name = $name;
@@ -181,9 +178,6 @@ class Content extends AbstractEntity
         return $this->text;
     }
 
-    /**
-     * @param string $text
-     */
     public function setText(string $text): void
     {
         $this->text = $text;
@@ -197,9 +191,6 @@ class Content extends AbstractEntity
         return $this->date;
     }
 
-    /**
-     * @param DateTime $date
-     */
     public function setDate(DateTime $date): void
     {
         $this->date = $date;
@@ -213,9 +204,6 @@ class Content extends AbstractEntity
         return $this->url;
     }
 
-    /**
-     * @param string $url
-     */
     public function setUrl(string $url): void
     {
         $this->url = $url;
@@ -229,9 +217,6 @@ class Content extends AbstractEntity
         return $this->slogan;
     }
 
-    /**
-     * @param string $slogan
-     */
     public function setSlogan(string $slogan): void
     {
         $this->slogan = $slogan;
@@ -245,9 +230,6 @@ class Content extends AbstractEntity
         return $this->condition;
     }
 
-    /**
-     * @param string $condition
-     */
     public function setCondition(string $condition): void
     {
         $this->condition = $condition;
@@ -261,9 +243,6 @@ class Content extends AbstractEntity
         return $this->award;
     }
 
-    /**
-     * @param string $award
-     */
     public function setAward(string $award): void
     {
         $this->award = $award;
@@ -277,9 +256,6 @@ class Content extends AbstractEntity
         return $this->sku;
     }
 
-    /**
-     * @param string $sku
-     */
     public function setSku(string $sku): void
     {
         $this->sku = $sku;
@@ -293,9 +269,6 @@ class Content extends AbstractEntity
         return $this->mpn;
     }
 
-    /**
-     * @param string $mpn
-     */
     public function setMpn(string $mpn): void
     {
         $this->mpn = $mpn;
@@ -309,9 +282,6 @@ class Content extends AbstractEntity
         return $this->gtin;
     }
 
-    /**
-     * @param string $gtin
-     */
     public function setGtin(string $gtin): void
     {
         $this->gtin = $gtin;
@@ -325,9 +295,6 @@ class Content extends AbstractEntity
         return $this->productId;
     }
 
-    /**
-     * @param string $productId
-     */
     public function setProductId(string $productId): void
     {
         $this->productId = $productId;
@@ -341,9 +308,6 @@ class Content extends AbstractEntity
         return $this->nsn;
     }
 
-    /**
-     * @param string $nsn
-     */
     public function setNsn(string $nsn): void
     {
         $this->nsn = $nsn;
@@ -357,57 +321,36 @@ class Content extends AbstractEntity
         return $this->price;
     }
 
-    /**
-     * @param float $price
-     */
     public function setPrice(float $price): void
     {
         $this->price = $price;
     }
 
-    /**
-     * @return string
-     */
     public function getCurrency(): string
     {
         return strtoupper($this->currency);
     }
 
-    /**
-     * @param string $currency
-     */
     public function setCurrency(string $currency): void
     {
         $this->currency = $currency;
     }
 
-    /**
-     * @return string
-     */
     public function getSelect(): string
     {
         return $this->select;
     }
 
-    /**
-     * @param string $select
-     */
     public function setSelect(string $select): void
     {
         $this->select = $select;
     }
 
-    /**
-     * @return float
-     */
     public function getDoubleValue(): float
     {
         return $this->doubleValue;
     }
 
-    /**
-     * @param float $doubleValue
-     */
     public function setDoubleValue(float $doubleValue): void
     {
         $this->doubleValue = $doubleValue;
@@ -421,25 +364,16 @@ class Content extends AbstractEntity
         return $this->count;
     }
 
-    /**
-     * @param float $count
-     */
     public function setCount(float $count): void
     {
         $this->count = $count;
     }
 
-    /**
-     * @return Content|null
-     */
     public function getBrand(): ?Content
     {
         return $this->brand;
     }
 
-    /**
-     * @param Content $brand
-     */
     public function setBrand(
         Content $brand
     ): void {
@@ -463,18 +397,12 @@ class Content extends AbstractEntity
         $this->offers = $offers;
     }
 
-    /**
-     * @return Content|null
-     */
     public function getPriceValidUntil(
 	): ?Content
     {
         return $this->priceValidUntil;
     }
 
-    /**
-     * @param Content $priceValidUntil
-     */
     public function setPriceValidUntil(
         Content $priceValidUntil
     ): void {
@@ -503,80 +431,51 @@ class Content extends AbstractEntity
         $this->images = $images;
     }
 
-    /**
-     * @return Content|null
-     */
     public function getAggregateRating(
 	): ?Content
     {
         return $this->aggregateRating;
     }
 
-    /**
-     * @param Content $aggregateRating
-     */
     public function setAggregateRating(
         Content $aggregateRating
     ): void {
         $this->aggregateRating = $aggregateRating;
     }
 
-    /**
-     * @return Content|null
-     */
     public function getReview(): ?Content
     {
         return $this->review;
     }
 
-    /**
-     * @param Content $review
-     */
     public function setReview(
         Content $review
     ): void {
         $this->review = $review;
     }
 
-    /**
-     * @return Content|null
-     */
     public function getReviewRating(): ?Content
     {
         return $this->reviewRating;
     }
 
-    /**
-     * @param Content $reviewRating
-     */
     public function setReviewRating(
         Content $reviewRating
     ): void {
         $this->reviewRating = $reviewRating;
     }
 
-    /**
-     * @return Content|null
-     */
     public function getAuthor(): ?Content
     {
         return $this->author;
     }
 
-    /**
-     * @param Content $author
-     */
     public function setAuthor(
         Content $author
     ): void {
         $this->author = $author;
     }
 
-    /**
-     * Prepend Schema URI
-     * @param string $value
-     * @return string
-     */
     public function prependSchemaUri(string $value): string
     {
         return Constants::SCHEMA_ORG_URI . $value;

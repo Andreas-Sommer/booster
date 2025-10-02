@@ -45,17 +45,11 @@ abstract class AbstractPage extends AbstractEntity
         $this->faqs = $faqs;
     }
 
-    /**
-     * @return Content|null
-     */
     public function getProduct(): ?Content
     {
         return $this->product;
     }
 
-    /**
-     * @param Content $product
-     */
     public function setProduct(
         Content $product
     ): void {
