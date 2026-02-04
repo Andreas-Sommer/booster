@@ -38,14 +38,29 @@ class ContentRepository extends Repository
 
     public function getFaqsByPid(int $pid)
     {
-        $uids = $this->getFaqUids($pid);
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('tx_booster_domain_model_content');
-        return $queryBuilder->select('*')
-                ->from('tx_booster_domain_model_content')->where($queryBuilder->expr()->in(
-                'uid',
-                $queryBuilder->createNamedParameter($uids, Connection::PARAM_INT_ARRAY)
-            ))->executeQuery()
+        return $queryBuilder
+            ->select('c.*')
+            ->from('tx_booster_domain_model_content', 'c')
+            ->join(
+                'c',
+                'tx_booster_pages_content_mm',
+                'mm',
+                $queryBuilder->expr()->eq('mm.uid_foreign', 'c.uid')
+            )
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'mm.uid_local',
+                    $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'mm.fieldname',
+                    $queryBuilder->createNamedParameter('tx_booster_faq', \PDO::PARAM_STR)
+                )
+            )
+            ->orderBy('mm.sorting', 'ASC')
+            ->executeQuery()
             ->fetchAllAssociative();
     }
 
@@ -54,6 +69,7 @@ class ContentRepository extends Repository
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
         							  ->getQueryBuilderForTable('tx_booster_pages_content_mm');
         return $queryBuilder->select('uid_foreign')
+            ->orderBy('sorting', 'ASC')
             ->from('tx_booster_pages_content_mm')->where($queryBuilder->expr()->eq(
                 'uid_local',
                 $queryBuilder->createNamedParameter($local_uid, \PDO::PARAM_INT)
