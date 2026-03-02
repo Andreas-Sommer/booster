@@ -56,8 +56,8 @@ return [
 				'items' => [
 					['label' => '', 'value' => 0]
 				],
-				'foreign_table' => 'tt_content',
-				'foreign_table_where' => 'AND tt_content.pid=###CURRENT_PID### AND tt_content.sys_language_uid IN (-1,0)',
+				'foreign_table' => 'tx_booster_domain_model_content',
+				'foreign_table_where' => 'AND tx_booster_domain_model_content.pid=###CURRENT_PID### AND tx_booster_domain_model_content.sys_language_uid IN (-1,0)',
 				'default' => 0
 			]
 		],
