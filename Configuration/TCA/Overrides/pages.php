@@ -16,9 +16,14 @@ call_user_func(
 				'config' => [
 					'type' => 'inline',
 					'foreign_table' => 'tx_booster_domain_model_content',
+					'foreign_table_where' => 'AND tx_booster_domain_model_content.pid=###CURRENT_PID### AND tx_booster_domain_model_content.sys_language_uid IN (-1,0,###REC_FIELD_sys_language_uid###)',
 					'MM' => 'tx_booster_pages_content_mm',
 					'MM_match_fields' => [
 						'fieldname' => 'tx_booster_faq'
+					],
+					'behaviour' => [
+						'allowLanguageSynchronization' => true,
+						'localizeChildrenAtParentLocalization' => true,
 					],
 					'maxitems' => 999,
 					'appearance' => [
@@ -54,6 +59,11 @@ call_user_func(
 				'config' => [
 					'type' => 'inline',
 					'foreign_table' => 'tx_booster_domain_model_content',
+					'foreign_table_where' => 'AND tx_booster_domain_model_content.pid=###CURRENT_PID### AND tx_booster_domain_model_content.sys_language_uid IN (-1,0,###REC_FIELD_sys_language_uid###)',
+					'behaviour' => [
+						'allowLanguageSynchronization' => true,
+						'localizeChildrenAtParentLocalization' => true,
+					],
 					'maxitems' => 1,
 					'appearance' => [
 						'collapseAll' => TRUE,

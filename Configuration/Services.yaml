@@ -7,3 +7,9 @@ services:
   Belsignum\Booster\:
     resource: '../Classes/*'
     exclude: '../Classes/Domain/Model/*'
+
+  Belsignum\Booster\Command\RepairStructuredDataLocalizationCommand:
+    tags:
+      - name: console.command
+        command: 'booster:structured-data:repair-localization'
+        description: 'Repair localized booster FAQ/Product relations on translated pages'
