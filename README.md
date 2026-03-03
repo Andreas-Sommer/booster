@@ -1,67 +1,79 @@
-# Booster (EXT:booster)
+# Booster Extension
 
-Schema.org structured data for TYPO3 pages, plus an FAQ accordion plugin.
-
-## Features
-- Adds FAQ and Product structured data (JSON-LD) on the frontend
-- FAQ records are managed per page with sortable ordering
-- Product data can be attached to a page
-- FAQ accordion plugin for frontend rendering
+Schema.org Structured Data extension for TYPO3.
 
 ## Requirements
-- TYPO3 12.4
-- PHP with `ext-json`
-- `brotkrueml/schema` (installed as a dependency)
+
+- TYPO3 `^12.4`
+- PHP version compatible with your TYPO3 v12 setup
+- PHP extension `ext-json`
+- Composer package `brotkrueml/schema` (`^3.13.0`)
 
 ## Installation
-1) Add the extension to your project (composer-based):
-   ```bash
-   composer require belsignum/booster
-   ```
-2) Activate the extension in the TYPO3 Extension Manager.
 
-## Configuration
-Include the TypoScript from the extension and adjust template paths if needed:
+Install the extension via Composer and activate it in TYPO3.
 
-```typoscript
-plugin.tx_booster {
-  view {
-    templateRootPath = EXT:booster/Resources/Private/Templates/
-    partialRootPath = EXT:booster/Resources/Private/Partials/
-    layoutRootPath = EXT:booster/Resources/Private/Layouts/
-  }
-}
+```bash
+composer require belsignum/booster
+vendor/bin/typo3 database:updateschema
+vendor/bin/typo3 cache:flush
 ```
 
-The FAQ plugin uses the paths below and can be overridden via TypoScript:
+For this project setup, `belsignum/booster` is loaded from `packages/booster`.
 
-```typoscript
-plugin.tx_booster_faq {
-  view {
-    templateRootPaths.0 = EXT:booster/Resources/Private/Templates/
-    partialRootPaths.0 = EXT:booster/Resources/Private/Partials/
-    layoutRootPaths.0 = EXT:booster/Resources/Private/Layouts/
-  }
-}
+## Scope
+
+The extension provides page-related Structured Data handling for:
+- FAQ (`FAQPage`)
+- Product (`Product`)
+- FAQ accordion plugin (`plugin.tx_booster_faq`)
+
+It also includes frontend JSON-LD rendering via `PreProcessHook`.
+
+## Editor (Backend)
+
+### Creating Structured Data:
+
+- Open the target page and go to `Page Properties` -> `Structured Data`.
+- Maintain FAQ entries in `tx_booster_faqs`.
+- Maintain Product entry in `tx_booster_product`.
+- For localized pages, use TYPO3 localization/synchronization actions in the same tab.
+
+### FAQ Accordion Plugin
+
+- Add a content element via `Plugins -> FAQ Accordions from Structured Data`.
+- The plugin renders the FAQ list attached to the current page.
+- FAQ ordering follows the MM sorting (`tx_booster_pages_content_mm`).
+
+
+## Localization import bug with l10nmgr (from 12.2 fixed by default)
+
+The localization relation issue is fixed from Booster version `12.2` onward:
+- Correct `l18n_parent` table mapping for `tx_booster_domain_model_content`.
+- Localization-aware TCA setup for page fields:
+  - `tx_booster_faqs`
+  - `tx_booster_product`
+- Support for language synchronization/localization of inline children.
+
+For existing installations with legacy data, run the repair command once.
+
+## CLI Repair Command (Legacy Data)
+
+To repair existing localized relations created before the fix:
+
+```bash
+vendor/bin/typo3 booster:structured-data:repair-localization --dry-run
 ```
 
-## Usage
-### FAQ structured data
-- Open the page properties and go to the “Booster” tab.
-- Add FAQ entries in the “FAQs” field (records are sortable).
-- On the frontend, the FAQ entries are rendered as Schema.org FAQPage JSON-LD.
+Run actual repair:
 
-### Product structured data
-- In the same “Booster” tab, create/select a Product record.
-- The product fields map to Schema.org Product, Offers, AggregateRating, Review, etc.
+```bash
+vendor/bin/typo3 booster:structured-data:repair-localization
+```
 
-### FAQ accordion plugin
-- Add a content element of type “Plugins → FAQ Accordions from Structured Data”.
-- The plugin renders the FAQ list (it reads the FAQ data attached to the current page).
+Optional filters:
 
-## Notes
-- Structured data output is only rendered when the `schema` extension is loaded.
-- FAQ ordering follows the sorting in the MM relation for the page.
-
-## License
-GPL-2.0-or-later
+```bash
+vendor/bin/typo3 booster:structured-data:repair-localization --dry-run --page=3662
+vendor/bin/typo3 booster:structured-data:repair-localization --dry-run --language=9
+```
