@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 The format is based on Keep a Changelog, and this project adheres to Semantic Versioning.
 
-## Unreleased
+## 12.3.0 - 2026-05-21
 ### Added
 - Page field `tx_booster_custom_jsonld` (`pages` table, `mediumtext`) for free-form JSON-LD per page, rendered in the `Structured Data` page-properties tab as a `t3editor` with JSON syntax highlighting.
 - DataHandler hook `Belsignum\Booster\Hook\DataHandler\CustomJsonLdValidator` (`processDatamapClass`): rejects invalid JSON on save (previous value restored, error FlashMessage), pretty-prints valid JSON before storing, emits a soft warning when `@context` or `@type` is missing.
