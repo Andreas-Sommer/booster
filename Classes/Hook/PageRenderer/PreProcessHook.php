@@ -10,6 +10,8 @@ namespace Belsignum\Booster\Hook\PageRenderer;
 
 use Belsignum\Booster\Domain\Repository\ContentRepository;
 use Brotkrueml\Schema\Type\TypeFactory;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
@@ -39,6 +41,11 @@ class PreProcessHook
 
     public function __construct()
     {
+        // @todo v13/v14: replace $GLOBALS['TSFE'] access by migrating this hook to a
+        // PSR-14 event listener for \TYPO3\CMS\Core\Page\Event\BeforePageRenderingEvent
+        // and resolving TSFE/site/language via $event->getRequest()->getAttribute(...).
+        // The current pattern is v12.4 idiomatic and works there, but $GLOBALS['TSFE']
+        // is being phased out in v13.3+ and removed in v14.
         $this->controller = $GLOBALS['TSFE'] ?? null;
         if ($this->controller === null)
         {
@@ -52,6 +59,9 @@ class PreProcessHook
 
     public function execute(?array &$params, PageRenderer $pageRenderer): void
     {
+        // @todo v13/v14: $this->controller->cObj->getRequest() will not be available
+        // once TSFE is dismantled. Prefer $GLOBALS['TYPO3_REQUEST'] as a transitional
+        // fallback or migrate the entire hook to BeforePageRenderingEvent (PSR-14).
         if ($this->controller === null || ApplicationType::fromRequest($this->controller->cObj->getRequest())->isFrontend() === false || $this->controller->page['no_index'] > 0)
         {
             return;
@@ -186,6 +196,68 @@ class PreProcessHook
                 $product->addProperty('review', $reviewObj);
             }
             $this->schemaManager->addType($product);
+        }
+
+        $this->emitCustomJsonLd($pid, $pageRenderer);
+    }
+
+    /**
+     * Reads the page field tx_booster_custom_jsonld for the given (already
+     * language-resolved) page UID and adds one <script type="application/ld+json">
+     * tag per top-level entity to the page header.
+     */
+    private function emitCustomJsonLd(int $pid, PageRenderer $pageRenderer): void
+    {
+        if ($pid <= 0)
+        {
+            return;
+        }
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()->removeAll();
+
+        $raw = $queryBuilder
+            ->select('tx_booster_custom_jsonld')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)
+                )
+            )
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchOne();
+
+        if (!is_string($raw) || trim($raw) === '')
+        {
+            return;
+        }
+
+        $decoded = json_decode($raw, true);
+        if (json_last_error() !== JSON_ERROR_NONE || !is_array($decoded))
+        {
+            return;
+        }
+
+        $entities = array_is_list($decoded) ? $decoded : [$decoded];
+        $flags = JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG;
+
+        foreach ($entities as $entity)
+        {
+            if (!is_array($entity) || $entity === [])
+            {
+                continue;
+            }
+            $minified = json_encode($entity, $flags);
+            if ($minified === false)
+            {
+                continue;
+            }
+            $pageRenderer->addHeaderData(
+                '<script type="application/ld+json">' . $minified . '</script>'
+            );
         }
     }
 }

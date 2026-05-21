@@ -9,7 +9,7 @@
 namespace Belsignum\Booster\Domain\Repository;
 
 use Belsignum\Booster\Domain\Model\Content;
-use Doctrine\DBAL\Connection;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
@@ -52,11 +52,11 @@ class ContentRepository extends Repository
             ->where(
                 $queryBuilder->expr()->eq(
                     'mm.uid_local',
-                    $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'mm.fieldname',
-                    $queryBuilder->createNamedParameter('tx_booster_faq', \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter('tx_booster_faq', Connection::PARAM_STR)
                 )
             )
             ->orderBy('mm.sorting', 'ASC')
@@ -72,10 +72,10 @@ class ContentRepository extends Repository
             ->orderBy('sorting', 'ASC')
             ->from('tx_booster_pages_content_mm')->where($queryBuilder->expr()->eq(
                 'uid_local',
-                $queryBuilder->createNamedParameter($local_uid, \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter($local_uid, Connection::PARAM_INT)
             ), $queryBuilder->expr()->eq(
                 'fieldname',
-                $queryBuilder->createNamedParameter('tx_booster_faq', \PDO::PARAM_STR)
+                $queryBuilder->createNamedParameter('tx_booster_faq', Connection::PARAM_STR)
             ))->executeQuery()
             ->fetchFirstColumn();
     }

@@ -18,6 +18,24 @@
 			<trans-unit id="pages.tx_booster_product.create">
 				<source>Create new Product</source>
 			</trans-unit>
+			<trans-unit id="pages.tx_booster_custom_jsonld">
+				<source>Custom JSON-LD</source>
+			</trans-unit>
+			<trans-unit id="pages.tx_booster_custom_jsonld.description">
+				<source>Paste a JSON-LD object or an array of objects. For multiple entities wrap them in square brackets and separate with commas, e.g. [ { ... }, { ... } ] — each top-level entity will be emitted as its own &lt;script type="application/ld+json"&gt; tag. The value is validated on save and stored unminified; invalid JSON is rejected.</source>
+			</trans-unit>
+			<trans-unit id="pages.tx_booster_richresults_link">
+				<source>Google Rich Results Test</source>
+			</trans-unit>
+			<trans-unit id="pages.tx_booster_richresults_link.description">
+				<source>Opens Google's external validator in a new tab. Only publicly reachable URLs can be checked.</source>
+			</trans-unit>
+			<trans-unit id="pages.tx_booster_richresults_link.button">
+				<source>Validate current page with Google</source>
+			</trans-unit>
+			<trans-unit id="pages.tx_booster_richresults_link.unsaved">
+				<source>Please save the page first to enable the validator link.</source>
+			</trans-unit>
 
 			<trans-unit id="tx_booster_domain_model_content">
 				<source>Booster Content</source>

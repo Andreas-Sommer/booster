@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace Belsignum\Booster\Command;
 
-use PDO;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -211,24 +211,24 @@ class RepairStructuredDataLocalizationCommand extends Command
         $constraints = [
             $queryBuilder->expr()->gt(
                 'sys_language_uid',
-                $queryBuilder->createNamedParameter(0, PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
             ),
             $queryBuilder->expr()->gt(
                 'l10n_parent',
-                $queryBuilder->createNamedParameter(0, PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
             ),
         ];
 
         if ($pageFilter !== null) {
             $constraints[] = $queryBuilder->expr()->orX(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($pageFilter, PDO::PARAM_INT)),
-                $queryBuilder->expr()->eq('l10n_parent', $queryBuilder->createNamedParameter($pageFilter, PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($pageFilter, Connection::PARAM_INT)),
+                $queryBuilder->expr()->eq('l10n_parent', $queryBuilder->createNamedParameter($pageFilter, Connection::PARAM_INT))
             );
         }
         if ($languageFilter !== null) {
             $constraints[] = $queryBuilder->expr()->eq(
                 'sys_language_uid',
-                $queryBuilder->createNamedParameter($languageFilter, PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter($languageFilter, Connection::PARAM_INT)
             );
         }
 
@@ -254,7 +254,7 @@ class RepairStructuredDataLocalizationCommand extends Command
             ->select('uid', 'tx_booster_product')
             ->from(self::TABLE_PAGES)
             ->where(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT))
             )
             ->execute()
             ->fetchAssociative();
@@ -281,11 +281,11 @@ class RepairStructuredDataLocalizationCommand extends Command
             ->where(
                 $queryBuilder->expr()->eq(
                     'l18n_parent',
-                    $queryBuilder->createNamedParameter($defaultUid, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($defaultUid, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'sys_language_uid',
-                    $queryBuilder->createNamedParameter($languageUid, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($languageUid, Connection::PARAM_INT)
                 )
             )
             ->setMaxResults(1)
@@ -306,11 +306,11 @@ class RepairStructuredDataLocalizationCommand extends Command
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid_local',
-                    $queryBuilder->createNamedParameter($pageUid, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pageUid, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'fieldname',
-                    $queryBuilder->createNamedParameter(self::FAQ_FIELDNAME, PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter(self::FAQ_FIELDNAME, Connection::PARAM_STR)
                 )
             )
             ->orderBy('sorting', 'ASC')
@@ -355,11 +355,11 @@ class RepairStructuredDataLocalizationCommand extends Command
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid_local',
-                    $queryBuilder->createNamedParameter($pageUid, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pageUid, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'fieldname',
-                    $queryBuilder->createNamedParameter(self::FAQ_FIELDNAME, PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter(self::FAQ_FIELDNAME, Connection::PARAM_STR)
                 )
             )
             ->execute()

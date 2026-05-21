@@ -1,6 +1,7 @@
 CREATE TABLE pages (
 	tx_booster_faqs  int(11) DEFAULT '0' NOT NULL,
-	tx_booster_product  int(11) DEFAULT '0' NOT NULL
+	tx_booster_product  int(11) DEFAULT '0' NOT NULL,
+	tx_booster_custom_jsonld mediumtext
 );
 
 CREATE TABLE tx_booster_domain_model_content (

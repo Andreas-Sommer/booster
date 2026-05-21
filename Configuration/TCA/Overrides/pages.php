@@ -53,6 +53,31 @@ call_user_func(
 					],
 				],
 			],
+			'tx_booster_richresults_link' => [
+				'exclude' => true,
+				'label' => $ll . ':pages.tx_booster_richresults_link',
+				'description' => $ll . ':pages.tx_booster_richresults_link.description',
+				'config' => [
+					'type' => 'user',
+					'renderType' => 'boosterRichResultsLink',
+				],
+			],
+			'tx_booster_custom_jsonld' => [
+				'exclude' => true,
+				'label' => $ll . ':pages.tx_booster_custom_jsonld',
+				'description' => $ll . ':pages.tx_booster_custom_jsonld.description',
+				'config' => [
+					'type' => 'text',
+					'renderType' => 't3editor',
+					'format' => 'json',
+					'rows' => 20,
+					'cols' => 80,
+					'eval' => 'trim',
+					'behaviour' => [
+						'allowLanguageSynchronization' => true,
+					],
+				],
+			],
 			'tx_booster_product' => [
 				'exclude' => true,
 				'label' => $ll . ':pages.tx_booster_product',
@@ -97,7 +122,7 @@ call_user_func(
 		);
 		ExtensionManagementUtility::addToAllTCAtypes(
 			$table,
-			'--div--;' . $ll . ':pages.tabs.booster, tx_booster_faqs, tx_booster_product',
+			'--div--;' . $ll . ':pages.tabs.booster, tx_booster_faqs, tx_booster_product, tx_booster_richresults_link, tx_booster_custom_jsonld',
 			(string) Constants::CONTENT_TYPE_DEFAULT,
 			'after:endtime'
 		);
